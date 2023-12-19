@@ -18,6 +18,9 @@
 		A2B14FF92B28F7E200C09AEC /* TopChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B14FF82B28F7E200C09AEC /* TopChartsViewController.swift */; };
 		A2B14FFE2B28F7E800C09AEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2B14FFD2B28F7E800C09AEC /* Assets.xcassets */; };
 		A2B150012B28F7E800C09AEC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B14FFF2B28F7E800C09AEC /* LaunchScreen.storyboard */; };
+		A2B7B2742B31E0D500409EFC /* DetailMovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B7B2732B31E0D400409EFC /* DetailMovieModel.swift */; };
+		A2B7B2762B31E0E200409EFC /* DetailMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B7B2752B31E0E200409EFC /* DetailMoviePresenter.swift */; };
+		A2B7B2782B31E10300409EFC /* DetailMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B7B2772B31E10300409EFC /* DetailMovieViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		A2B14FFD2B28F7E800C09AEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2B150002B28F7E800C09AEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A2B150022B28F7E800C09AEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2B7B2732B31E0D400409EFC /* DetailMovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieModel.swift; sourceTree = "<group>"; };
+		A2B7B2752B31E0E200409EFC /* DetailMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMoviePresenter.swift; sourceTree = "<group>"; };
+		A2B7B2772B31E10300409EFC /* DetailMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMovieViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +132,7 @@
 			children = (
 				A2B14FF42B28F7E200C09AEC /* AppDelegate.swift */,
 				A2B14FF62B28F7E200C09AEC /* SceneDelegate.swift */,
+				A2B7B27C2B31E12E00409EFC /* DetailMovieModule */,
 				A2A2C8062B2E297600B12760 /* Services */,
 				A2B0D1FE2B2A202F00E13C24 /* TopChartModule */,
 				A2B14FFD2B28F7E800C09AEC /* Assets.xcassets */,
@@ -133,6 +140,40 @@
 				A2B150022B28F7E800C09AEC /* Info.plist */,
 			);
 			path = MovieAppMVP;
+			sourceTree = "<group>";
+		};
+		A2B7B2792B31E10A00409EFC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A2B7B2732B31E0D400409EFC /* DetailMovieModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A2B7B27A2B31E11900409EFC /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				A2B7B2752B31E0E200409EFC /* DetailMoviePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		A2B7B27B2B31E12200409EFC /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A2B7B2772B31E10300409EFC /* DetailMovieViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		A2B7B27C2B31E12E00409EFC /* DetailMovieModule */ = {
+			isa = PBXGroup;
+			children = (
+				A2B7B2792B31E10A00409EFC /* Model */,
+				A2B7B27A2B31E11900409EFC /* Presenter */,
+				A2B7B27B2B31E12200409EFC /* ViewController */,
+			);
+			path = DetailMovieModule;
 			sourceTree = "<group>";
 		};
 		C1E3342B883F584C329B08BB /* Frameworks */ = {
@@ -275,6 +316,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2B7B2762B31E0E200409EFC /* DetailMoviePresenter.swift in Sources */,
+				A2B7B2742B31E0D500409EFC /* DetailMovieModel.swift in Sources */,
 				A2B0D2022B2A2EAA00E13C24 /* TopChartViewCell.swift in Sources */,
 				A2B0D2002B2A228800E13C24 /* TopChartAssemble.swift in Sources */,
 				A2B0D1F92B2A1FA100E13C24 /* TopChartModel.swift in Sources */,
@@ -283,6 +326,7 @@
 				A2A2C8052B2E296F00B12760 /* NetworMoviewkService.swift in Sources */,
 				A2B14FF52B28F7E200C09AEC /* AppDelegate.swift in Sources */,
 				A2B14FF72B28F7E200C09AEC /* SceneDelegate.swift in Sources */,
+				A2B7B2782B31E10300409EFC /* DetailMovieViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
