@@ -109,4 +109,3 @@ extension TopChartsViewController: UITableViewDataSource {
         return cell
     }
 }
-

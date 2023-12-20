@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = TopChartAssemble.assemble()
+        window?.rootViewController = DetailMovieViewController()
         window?.makeKeyAndVisible()
     }
 
