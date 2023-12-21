@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class NetworMoviewkService {
+final class NetworMoviewkService {
     
     static let shared = NetworMoviewkService()
     

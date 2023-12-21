@@ -14,7 +14,7 @@ protocol DetailMovieVCProtocol: AnyObject {
     func setupApperance()
 }
 
-class DetailMovieViewController: UIViewController, UIGestureRecognizerDelegate {
+final class DetailMovieViewController: UIViewController, UIGestureRecognizerDelegate {
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -125,19 +125,18 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
         scrollView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalToSuperview().inset(60)
-//            make.edges.equalToSuperview()
         }
 
         movieImage.snp.makeConstraints { make in
             make.top.equalTo(scrollView.snp.top)
-            make.horizontalEdges.equalTo(scrollView.snp.horizontalEdges)
+            make.width.equalToSuperview()
             make.height.equalTo(442)
         }
         
         nameMoviewLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieImage.snp.bottom)
+            make.top.equalTo(movieImage.snp.bottom).offset(10)
             make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-110)
+            make.width.equalTo(250)
         }
         
         countryMovieLabel.snp.makeConstraints { make in
@@ -152,8 +151,8 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
         
         ratingMovieImage.snp.makeConstraints { make in
             make.top.equalTo(movieImage.snp.bottom).offset(7)
-            make.leading.equalTo(nameMoviewLabel.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().offset(-10)
+            make.width.equalTo(100)
+            make.leading.equalTo(nameMoviewLabel.snp.trailing)
             make.height.equalTo(30)
         }
         
@@ -163,15 +162,14 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
         }
         
         descriptionMovieLabel.snp.makeConstraints { make in
-            make.top.equalTo(ratingTextLabel.snp.bottom)
+            make.top.equalTo(countryMovieLabel.snp.bottom).offset(10)
             make.width.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(5)
         }
         
         readMoreButton.snp.makeConstraints { make in
             make.top.equalTo(descriptionMovieLabel.snp.bottom).inset(5)
-//            make.width.equalToSuperview().inset(10)
-            make.trailing.equalToSuperview().offset(-10)
+            make.leading.equalToSuperview().offset(300)
         }
         
         saveButton.snp.makeConstraints { make in
@@ -203,6 +201,21 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
         
     }
     
+    func configure(detailModel: TopChartsModel, indexPath: IndexPath) {
+        guard let url = URL(string: detailModel.docs?[indexPath.row].poster?.previewURL ?? "nil") else {return}
+        DispatchQueue.global().async {
+            let data = try? Data(contentsOf: url)
+            DispatchQueue.main.async {
+                self.movieImage.image = UIImage(data: data!)
+            }
+        }
+        
+        nameMoviewLabel.text = detailModel.docs?[indexPath.row].name
+        countryMovieLabel.text = detailModel.docs?[indexPath.row].countries?.first?.name
+        yearOfReleaseLabel.text = "\(detailModel.docs?[indexPath.row].year ?? 1)"
+
+    }
+    
     @objc func labelAction() {
 
         if descriptionMovieLabel.numberOfLines == 7 {
@@ -228,8 +241,4 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
         }
     }
     
-}
-
-#Preview(traits: .portrait) {
-    DetailMovieViewController()
 }
