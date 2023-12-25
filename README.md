@@ -9,9 +9,9 @@
 
 Способ разворачивания проекта:
 1. скачиваем проект
--- git clone
+- git clone
 2. устанавливаем зависимости - SnapKit, Alamofire, Kingfisher, SwiftLint
--- pod install
+- pod install
    
 Что сделано:
 1. развернут проект и добавлены зависимости;
