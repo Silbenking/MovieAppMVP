@@ -8,13 +8,12 @@
 import Foundation
 
 protocol TopChartPresenterProtocol: AnyObject { // описываются те действия, на которые должен реагировать презентер(должен знать как обрабатывать события при том или ином дейтсвии - вообщем бизнес-логика)
-    
 }
 
-class TopChartPresenter {
+final class TopChartPresenter {
     
     weak var view: TopChartVCProtocol!
-    
+
 }
 
 extension TopChartPresenter: TopChartPresenterProtocol {

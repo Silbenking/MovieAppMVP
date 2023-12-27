@@ -17,8 +17,9 @@ protocol TopChartVCProtocol: AnyObject {//функции, которые дол�
 final class TopChartsViewController: UIViewController {
 
     var presenter: TopChartPresenterProtocol!
-    var tableView: UITableView! // почему создаем таким образом?
+    var tableView: UITableView!
     var topChartArray = [TopChartsModel]()
+    let networMoviewkService = NetworMoviewkService()
     
     init(presenter: TopChartPresenterProtocol) {
         super.init(nibName: nil, bundle: nil)
@@ -29,7 +30,7 @@ final class TopChartsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let topChartLabel: UILabel = {
+   private let topChartLabel: UILabel = {
         let label = UILabel()
         label.text = "Top Charts"
         label.font = .systemFont(ofSize: 30, weight: .bold)
@@ -50,29 +51,30 @@ final class TopChartsViewController: UIViewController {
 extension TopChartsViewController: TopChartVCProtocol {
     
     // MARK: - Network Service
-    
-    func networkService() {
-        NetworMoviewkService.shared.fetchData { result in
-            switch result {
-            case .success(let movieResult):
-                for _ in movieResult.docs! {
-                    self.topChartArray.append(movieResult)
+        func networkService() {
+            networMoviewkService.fetchData { [weak self] result in
+                switch result {
+                case .success(let movieResult):
+                    for _ in movieResult.docs! {
+                        self?.topChartArray.append(movieResult)
+                    }
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                    }
+                    case .failure(let error):
+                    print(error)
                 }
-                print(movieResult)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                case .failure(let error):
-                print(error)
             }
-        }
+        
     }
+    
     // MARK: - setup TableView
 
-    func setupTableView() { // и лучше все в одном месте настраивать и добавлять
+    func setupTableView() {
         tableView = UITableView()
         view.addSubview(tableView)
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(TopChartViewCell.self, forCellReuseIdentifier: "TopChartViewCell")
         tableView.backgroundColor = .black
         tableView.rowHeight = UITableView.automaticDimension
@@ -110,3 +112,15 @@ extension TopChartsViewController: UITableViewDataSource {
     }
 }
 
+extension TopChartsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailVC = DetailMovieViewController()
+        if let detail = topChartArray.first?.docs?[indexPath.row] {
+            detailVC.configure(detailModel: self.topChartArray[indexPath.row], indexPath: indexPath)
+        }
+        navigationController?.navigationBar.barTintColor = .black
+        navigationController?.navigationBar.backgroundColor = .black
+        navigationController?.navigationBar.tintColor = .orange.withAlphaComponent(0.8)
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+}

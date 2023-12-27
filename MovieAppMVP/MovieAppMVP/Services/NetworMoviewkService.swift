@@ -8,30 +8,40 @@
 import Foundation
 import Alamofire
 
-class NetworMoviewkService {
+protocol NetworMoviewkServiceProtocol {
+    func fetchData(complition: @escaping (Result<TopChartsModel, Error>) -> Void)
+}
+
+final class NetworMoviewkService: NetworMoviewkServiceProtocol {
     
-    static let shared = NetworMoviewkService()
-    
-    private init() {}
+    enum NetworkMovieError: Error {
+        case network
+        case decode
+    }
     
     func fetchData(complition: @escaping (Result<TopChartsModel, Error>) -> Void) {
-        let movieTopUrl = "https://api.kinopoisk.dev/v1.4/movie?page=1&limit=20&selectFields=id&selectFields=name&selectFields=alternativeName&selectFields=enName&selectFields=type&selectFields=year&selectFields=description&selectFields=shortDescription&selectFields=movieLength&selectFields=isSeries&selectFields=ticketsOnSale&selectFields=totalSeriesLength&selectFields=seriesLength&selectFields=ratingMpaa&selectFields=ageRating&selectFields=top10&selectFields=top250&selectFields=typeNumber&selectFields=status&selectFields=names&selectFields=logo&selectFields=poster&selectFields=backdrop&selectFields=rating&selectFields=votes&selectFields=genres&selectFields=countries&selectFields=releaseYears&sortField=top250&sortType=1&lists=top250"
-        
-        AF.request(movieTopUrl, headers: ["X-API-KEY": "WE3Y90J-F3KMXNJ-JY1FPMH-ED418Z5"])
+       
+        AF.request(Constant.movieTopUrl, headers: ["X-API-KEY": Constant.apyKey])
             .validate()
             .response { response in
                 guard let data = response.data else {
                     if let error = response.error {
-                        complition(.failure(error))
+                        complition(.failure(NetworkMovieError.network))
                     }
                     return
                 }
                 let decoder = JSONDecoder()
                 guard let moviewResult = try? decoder.decode(TopChartsModel.self, from: data) else {
-                    print("Ошибка")
+                    complition(.failure(NetworkMovieError.decode))
                     return
                 }
                 complition(.success(moviewResult))
             }
     }
+}
+
+struct Constant {
+    static let movieTopUrl =  "https://api.kinopoisk.dev/v1.4/movie?page=1&limit=20&selectFields=id&selectFields=name&selectFields=alternativeName&selectFields=enName&selectFields=type&selectFields=year&selectFields=description&selectFields=shortDescription&selectFields=movieLength&selectFields=isSeries&selectFields=ticketsOnSale&selectFields=totalSeriesLength&selectFields=seriesLength&selectFields=ratingMpaa&selectFields=ageRating&selectFields=top10&selectFields=top250&selectFields=typeNumber&selectFields=status&selectFields=names&selectFields=logo&selectFields=poster&selectFields=backdrop&selectFields=rating&selectFields=votes&selectFields=genres&selectFields=countries&selectFields=releaseYears&sortField=top250&notNullFields=top250&sortType=1&lists=top250"
+    
+    static let apyKey = "WE3Y90J-F3KMXNJ-JY1FPMH-ED418Z5"
 }
