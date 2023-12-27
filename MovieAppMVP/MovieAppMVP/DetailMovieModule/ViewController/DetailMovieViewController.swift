@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 protocol DetailMovieVCProtocol: AnyObject {
     func setupLayout()
@@ -24,7 +25,6 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     
     private let movieImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "test")
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 10
         image.clipsToBounds = true
@@ -33,7 +33,6 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     
     private let nameMoviewLabel: UILabel = {
         let label = UILabel()
-        label.text = "Название фильма"
         label.font = .systemFont(ofSize: 32)
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -43,7 +42,6 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     
     private let yearOfReleaseLabel: UILabel = {
         let label = UILabel()
-        label.text = "2023"
         label.font = .systemFont(ofSize: 15)
         label.textAlignment = .left
         label.textColor = .systemGray
@@ -52,7 +50,6 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     
     private let countryMovieLabel: UILabel = {
         let label = UILabel()
-        label.text = "Страна"
         label.font = .systemFont(ofSize: 15)
         label.textAlignment = .left
         label.textColor = .systemGray
@@ -68,7 +65,6 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     
     private let ratingTextLabel: UILabel = {
         let label = UILabel()
-        label.text = "8.5"
         label.font = .systemFont(ofSize: 35, weight: .bold)
         label.textAlignment = .left
         label.textColor = .systemGray
@@ -77,7 +73,6 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     
     private let descriptionMovieLabel: UILabel = {
         let label = UILabel()
-        label.text = "Предсеансовое обслуживание:Кэрол Дэнверс обретает свою утраченную личность, отнятую тиранами Крии, и мстит Высшему Разуму. Однако, непредвиденные последствия приводят к тому, что Кэрол взваливает на свои плечи бремя дестабилизированной вселенной. Когда она проходит через червоточину, которая должна вывести её на революционера из числа Крии, её силы переплетаются со способностями суперфанатки из Джерси-Сити, Камалы Хан, известной как Мисс Марвел, а также с племянницей Кэрол, Моникой Рамбо (агентом организации «М. Е. Ч.»). Они должны объединиться и научиться действовать сообща, чтобы спасти вселенную. Сеанс - фильм Решиться на… : Максим любит экстрим. Он живет на кураже и, казалось бы, ничего не боится. У Максима есть девушка – Зоя. Вместе они разделили радость от множества головокружительных приключений. Однажды, они приезжают на железнодорожный мост, чтобы совершить прыжок с альпинистской веревкой (ropejumping). В этот раз план Максима дал сбой: он прыгнул, а Зоя отказалась… Почему?"
         label.textAlignment = .left
         label.textColor = .systemGray
         label.font = .systemFont(ofSize: 15)
@@ -203,16 +198,13 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
     
     func configure(detailModel: TopChartsModel, indexPath: IndexPath) {
         guard let url = URL(string: detailModel.docs?[indexPath.row].poster?.previewURL ?? "nil") else {return}
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            DispatchQueue.main.async {
-                self.movieImage.image = UIImage(data: data!)
-            }
-        }
+        movieImage.kf.setImage(with: url)
         
         nameMoviewLabel.text = detailModel.docs?[indexPath.row].name
         countryMovieLabel.text = detailModel.docs?[indexPath.row].countries?.first?.name
         yearOfReleaseLabel.text = "\(detailModel.docs?[indexPath.row].year ?? 1)"
+        ratingTextLabel.text = "\(detailModel.docs?[indexPath.row].rating?.imdb ?? 8.5)"
+        descriptionMovieLabel.text = detailModel.docs?[indexPath.row].description
 
     }
     
@@ -233,11 +225,9 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
         if saveButton.isSelected {
             saveButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
             saveButton.setTitle("Сохранено", for: .normal)
-//            saveButton.isSelected = false
         } else {
             saveButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
             saveButton.setTitle("Сохранить", for: .normal)
-//            saveButton.isSelected = true
         }
     }
     

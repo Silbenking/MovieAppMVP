@@ -7,11 +7,10 @@
 
 import UIKit
 
-class TopChartViewCell: UITableViewCell {
+final class TopChartViewCell: UITableViewCell {
 
     private let numberMovieLabel: UILabel = {
         let label = UILabel()
-        label.text = "1."
         label.textColor = .white
         return label
     }()
@@ -24,7 +23,6 @@ class TopChartViewCell: UITableViewCell {
     
     private let nameMovieLabel: UILabel = {
         let label = UILabel()
-        label.text = "testNameMovie"
         label.textAlignment = .left
         label.numberOfLines = 0
         label.textColor = .white
@@ -33,7 +31,6 @@ class TopChartViewCell: UITableViewCell {
     
     private let categoryMovieLabel: UILabel = {
         let label = UILabel()
-        label.text = "testCategoryMovie"
         label.textColor = .systemGray
         label.textAlignment = .left
         return label
@@ -69,7 +66,6 @@ class TopChartViewCell: UITableViewCell {
         nameMovieLabel.snp.makeConstraints { make in
             make.leading.equalTo(movieImage.snp.trailing).offset(10)
             make.top.equalToSuperview().inset(40)
-//            make.bottom.equalToSuperview().inset(10)
             make.trailing.equalToSuperview().inset(5)
         }
         categoryMovieLabel.snp.makeConstraints { make in
@@ -90,7 +86,7 @@ class TopChartViewCell: UITableViewCell {
             }
         }
 
-        numberMovieLabel.text = "\(topCharts.docs?[indexPath.row].top250 ?? 1)"
+        numberMovieLabel.text = "\(topCharts.docs?[indexPath.row].top250 ?? 9)"
         nameMovieLabel.text = topCharts.docs?[indexPath.row].name
         categoryMovieLabel.text = topCharts.docs?[indexPath.row].countries?.first?.name
     }
