@@ -9,17 +9,17 @@ import UIKit
 import SnapKit
 
 protocol TopChartVCProtocol: AnyObject {//функции, которые должны выполняться при взаимодействии с пользовательским интерфейсом (viewProtocol) - ОПИСЫВАЕМ ТЕ ДЕЙСТВИЯ КОТОРЫЕ ВЬЮ ДОЛЖНА ВЫПОЛНЯТЬ(отображение полей логина, авторизации и тд)
-    func setupLayout()
-    func embedViews()
-    func setupTableView()
+    func reloadData()
+    func errorDecode()
+    func errorNetwork()
 }
 
 final class TopChartsViewController: UIViewController {
-
-    var presenter: TopChartPresenterProtocol!
-    var tableView: UITableView!
+    
+    private let router: DetailRouterProtocol = Router.shared
+    private var presenter: TopChartPresenterProtocol!
     var topChartArray = [TopChartsModel]()
-    let networMoviewkService = NetworMoviewkService()
+    let topView = TopChartView()
     
     init(presenter: TopChartPresenterProtocol) {
         super.init(nibName: nil, bundle: nil)
@@ -30,97 +30,69 @@ final class TopChartsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-   private let topChartLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Top Charts"
-        label.font = .systemFont(ofSize: 30, weight: .bold)
-        label.textColor = .white
-        label.textAlignment = .left
-        return label
-    }()
-        
+    override func loadView() {
+        self.view = topView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        embedViews()
-        setupLayout()
-        setupTableView()
-        networkService()
+        presenter.loadData()
+        tableViewDelegate()
     }
 }
 
 extension TopChartsViewController: TopChartVCProtocol {
+    // MARK: - Error networkServixe
     
-    // MARK: - Network Service
-        func networkService() {
-            networMoviewkService.fetchData { [weak self] result in
-                switch result {
-                case .success(let movieResult):
-                    for _ in movieResult.docs! {
-                        self?.topChartArray.append(movieResult)
-                    }
-                    DispatchQueue.main.async {
-                        self?.tableView.reloadData()
-                    }
-                    case .failure(let error):
-                    print(error)
-                }
-            }
-        
+    func errorDecode() {
+        errorAlert(nameError: "Ошибка декодирования")
     }
     
-    // MARK: - setup TableView
+    func errorNetwork() {
+        errorAlert(nameError: "Ошибка сети")
+    }
+    
+    // MARK: - Reload Data
 
-    func setupTableView() {
-        tableView = UITableView()
-        view.addSubview(tableView)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(TopChartViewCell.self, forCellReuseIdentifier: "TopChartViewCell")
-        tableView.backgroundColor = .black
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(topChartLabel.snp.bottom).inset(-30)
-            make.bottom.leading.trailing.equalToSuperview().inset(10)
+    func reloadData() {
+        DispatchQueue.main.async {
+            self.topView.tableView.reloadData()
         }
     }
-    // MARK: - setup Layout
     
-    func setupLayout() {
-        topChartLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
-        }
-        
-    }
-    // MARK: - embed Views
-    
-    func embedViews() {
-        [topChartLabel].forEach {view.addSubview($0)}
+    func tableViewDelegate() {
+        topView.tableView.dataSource = self
+        topView.tableView.delegate = self
     }
 }
 
 extension TopChartsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        topChartArray.count
+        presenter.dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TopChartViewCell", for: indexPath) as? TopChartViewCell else {fatalError()}
-        let topChartArray = topChartArray[indexPath.row]
-        cell.configure(topCharts: topChartArray, indexPath: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TopChartViewCell.identifaerTop, for: indexPath) as? TopChartViewCell else {fatalError()}
+        let topChartArray = presenter.dataSource[indexPath.row]
+        let model =  TopChartViewCell.ViewModel(movieName: topChartArray.docs?[indexPath.row].name ?? "name", 
+                                                movieNumber: "\(topChartArray.docs?[indexPath.row].top250 ?? 1)",
+                                                movieCategory: topChartArray.docs?[indexPath.row].countries?.first?.name ?? "name",
+                                                imageMovie: topChartArray.docs?[indexPath.row].poster?.url ?? "name")
+        cell.configure(with: model)
         return cell
     }
 }
 
 extension TopChartsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailVC = DetailMovieViewController()
-        if let detail = topChartArray.first?.docs?[indexPath.row] {
-            detailVC.configure(detailModel: self.topChartArray[indexPath.row], indexPath: indexPath)
-        }
-        navigationController?.navigationBar.barTintColor = .black
-        navigationController?.navigationBar.backgroundColor = .black
-        navigationController?.navigationBar.tintColor = .orange.withAlphaComponent(0.8)
-        navigationController?.pushViewController(detailVC, animated: true)
+        let detail = presenter.dataSource.first?.docs?[indexPath.row]
+        let model = DetailMovieView.ViewModel(nameMovie: detail?.name ?? "name",
+                                  movieImage: detail?.poster?.url ?? "test",
+                                  countryMovie: detail?.countries?.first?.name ?? "country",
+                                  yearOfRealeseMovie: "\(detail?.year ?? 1)",
+                                  ratingMovie: "\(detail?.rating?.imdb ?? 8.5)",
+                                  descriptionMovie: detail?.description ?? "description")
+        router.showDetailMovie(from: self, model: model)
+        
     }
 }

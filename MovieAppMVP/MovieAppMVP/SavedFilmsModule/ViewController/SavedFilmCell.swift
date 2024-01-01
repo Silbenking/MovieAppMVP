@@ -1,24 +1,19 @@
 //
-//  TopChartViewCell.swift
+//  SavedFilmCell.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 13.12.2023.
+//  Created by Сергей Сырбу on 31.12.2023.
 //
 
 import UIKit
 
-final class TopChartViewCell: UITableViewCell {
-    
-    static let identifaerTop = "TopChartViewCell"
-    
-    private let numberMovieLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        return label
-    }()
+class SavedFilmCell: UITableViewCell {
+
+    static let ideintifier = "SavedFilmCell"
     
     private let movieImage: UIImageView = {
         let image = UIImageView()
+        image.image = UIImage(named: "test")
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -27,6 +22,7 @@ final class TopChartViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.text = "NAME"
         label.textColor = .white
         return label
     }()
@@ -34,6 +30,7 @@ final class TopChartViewCell: UITableViewCell {
     private let categoryMovieLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
+        label.text = "Country"
         label.textAlignment = .left
         return label
     }()
@@ -41,7 +38,6 @@ final class TopChartViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -49,14 +45,9 @@ final class TopChartViewCell: UITableViewCell {
     }
     // MARK: - setup Layout
     private func setupLayout() {
-        [numberMovieLabel, movieImage, nameMovieLabel, categoryMovieLabel].forEach {contentView.addSubview($0)}
+        [movieImage, nameMovieLabel, categoryMovieLabel].forEach {contentView.addSubview($0)}
         
         contentView.backgroundColor = .black
-        
-        numberMovieLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(5)
-            make.top.equalToSuperview().inset(10)
-        }
         
         movieImage.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 150, height: 150))
@@ -75,32 +66,27 @@ final class TopChartViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(40)
         }
     }
-    // MARK: - load Image
-    func loadImage(imageUrl: String) {
-        guard let url = URL(string: imageUrl ) else {return}
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            DispatchQueue.main.async {
-                self.movieImage.image = UIImage(data: data!)
-            }
-        }
-    }
-    
     // MARK: - configure Data Cell
     
-    func configure(with model: ViewModel) {
-        loadImage(imageUrl: model.imageMovie)
-        numberMovieLabel.text = model.movieNumber
-        nameMovieLabel.text = model.movieName
-        categoryMovieLabel.text = model.movieCategory
+    func configure(with model: SavedModel) {
+//        loadImage(imageUrl: model.imageMovie)
+        movieImage.image = UIImage(named: model.image)
+        nameMovieLabel.text = model.name
+        categoryMovieLabel.text = model.categoty    
         
     }
+//    func configure(with model: ViewModel) {
+////        loadImage(imageUrl: model.imageMovie)
+//        movieImage.image = UIImage(named: model.imageMovie)
+//        nameMovieLabel.text = model.movieName
+//        categoryMovieLabel.text = model.movieCategory
+//        
+//    }
 }
 
-extension TopChartViewCell {
+extension SavedFilmCell {
     struct ViewModel {
         let movieName: String
-        let movieNumber: String
         let movieCategory: String
         let imageMovie: String
     }

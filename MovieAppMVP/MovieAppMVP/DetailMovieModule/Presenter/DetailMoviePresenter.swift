@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+protocol DetailMoviePresenterProtocol: AnyObject {
+    
+    func handleSaveMovieButton()
+}
+
+class DetailMoviePresenter: DetailMoviePresenterProtocol {
+    
+    weak var view: DetailMovieVCProtocol!
+    
+    func handleSaveMovieButton() {
+        view.saveButton()
+    }
+}
