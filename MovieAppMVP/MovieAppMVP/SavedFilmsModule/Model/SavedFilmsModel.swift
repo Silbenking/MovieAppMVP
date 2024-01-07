@@ -5,11 +5,10 @@
 //  Created by Сергей Сырбу on 31.12.2023.
 //
 
-import Foundation
+import RealmSwift
 
-
-struct SavedModel {
-    let name: String
-    let categoty: String
-    let image: String
+class SavedModel: Object {
+    @Persisted var nameMovie = ""
+    @Persisted var countryMovie = ""
+    @Persisted var imgeMovie = ""
 }

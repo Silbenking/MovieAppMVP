@@ -109,6 +109,7 @@ class DetailMovieView: UIView {
         
         readMoreButton.addTarget(self, action: #selector(labelAction), for: .touchUpInside)
     }
+    // MARK: - label Action
     
     @objc func labelAction() {
             if descriptionMovieLabel.numberOfLines == 7 {
@@ -119,7 +120,8 @@ class DetailMovieView: UIView {
                 readMoreButton.setTitle("читать больше..", for: .normal)
             }
     }
-    
+    // MARK: - setupLayout
+
     private func setupLayout() {
         scrollView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
@@ -179,14 +181,15 @@ class DetailMovieView: UIView {
         }
         
     }
-    
+    // MARK: - embed Views
     private func embedViews() {
         
         self.addSubview(scrollView)
         [movieImage, nameMoviewLabel, yearOfReleaseLabel, countryMovieLabel, ratingMovieImage, ratingTextLabel, descriptionMovieLabel, readMoreButton, saveButton].forEach {scrollView.addSubview($0)}
         
     }
-    
+    // MARK: - setup Apperance
+
     func setupApperance() {
         
         self.backgroundColor = .black

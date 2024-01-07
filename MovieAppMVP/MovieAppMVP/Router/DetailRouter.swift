@@ -15,6 +15,7 @@ extension Router: DetailRouterProtocol {
     func showDetailMovie(from viewController: UIViewController, model: DetailMovieView.ViewModel) {
         let detailVC = DetailMovieAssemble.assemble()
         detailVC.detailMovieView.configure(with: model)
+        detailVC.movieDetailModel = model
         viewController.navigationController?.pushViewController(detailVC, animated: true)
     }
     

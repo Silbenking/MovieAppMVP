@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-protocol TopChartVCProtocol: AnyObject {//функции, которые должны выполняться при взаимодействии с пользовательским интерфейсом (viewProtocol) - ОПИСЫВАЕМ ТЕ ДЕЙСТВИЯ КОТОРЫЕ ВЬЮ ДОЛЖНА ВЫПОЛНЯТЬ(отображение полей логина, авторизации и тд)
+protocol TopChartVCProtocol: AnyObject {
     func reloadData()
     func errorDecode()
     func errorNetwork()

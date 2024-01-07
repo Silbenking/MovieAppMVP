@@ -29,7 +29,8 @@ class SavedFilmView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    // MARK: - setup Layout
+
     private func setupLayout() {
         self.addSubview(savedLabel)
         savedLabel.snp.makeConstraints { make in
@@ -37,8 +38,9 @@ class SavedFilmView: UIView {
             make.top.equalTo(self.safeAreaLayoutGuide).inset(30)
         }
     }
-    
-    func setupTableView() {
+    // MARK: - setup TableView
+
+    private func setupTableView() {
         tableView = UITableView()
         self.addSubview(tableView)
         tableView.register(SavedFilmCell.self, forCellReuseIdentifier: "SavedFilmCell")

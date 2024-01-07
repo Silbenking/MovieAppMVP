@@ -11,26 +11,23 @@ class SavedFilmCell: UITableViewCell {
 
     static let ideintifier = "SavedFilmCell"
     
-    private let movieImage: UIImageView = {
+    private lazy var movieImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "test")
         image.contentMode = .scaleAspectFit
         return image
     }()
     
-    private let nameMovieLabel: UILabel = {
+    private lazy var nameMovieLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.numberOfLines = 0
-        label.text = "NAME"
         label.textColor = .white
         return label
     }()
     
-    private let categoryMovieLabel: UILabel = {
+    private lazy var categoryMovieLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
-        label.text = "Country"
         label.textAlignment = .left
         return label
     }()
@@ -66,22 +63,25 @@ class SavedFilmCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(40)
         }
     }
+    // MARK: - load Image
+    private func loadImage(imageUrl: String) {
+        guard let url = URL(string: imageUrl ) else {return}
+        DispatchQueue.global().async {
+            let data = try? Data(contentsOf: url)
+            DispatchQueue.main.async {
+                self.movieImage.image = UIImage(data: data!)
+            }
+        }
+    }
+    
     // MARK: - configure Data Cell
     
-    func configure(with model: SavedModel) {
-//        loadImage(imageUrl: model.imageMovie)
-        movieImage.image = UIImage(named: model.image)
-        nameMovieLabel.text = model.name
-        categoryMovieLabel.text = model.categoty    
+    func configure(with model: ViewModel) {
+        loadImage(imageUrl: model.imageMovie)
+        nameMovieLabel.text = model.movieName
+        categoryMovieLabel.text = model.movieCategory
         
     }
-//    func configure(with model: ViewModel) {
-////        loadImage(imageUrl: model.imageMovie)
-//        movieImage.image = UIImage(named: model.imageMovie)
-//        nameMovieLabel.text = model.movieName
-//        categoryMovieLabel.text = model.movieCategory
-//        
-//    }
 }
 
 extension SavedFilmCell {
