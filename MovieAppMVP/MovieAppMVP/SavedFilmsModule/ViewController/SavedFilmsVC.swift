@@ -37,13 +37,15 @@ class SavedFilmsVC: UIViewController {
         super.viewDidLoad()
         saveArray = realm.objects(SavedModel.self)
         setupTableView()
-        presenter.notificatinAddObserverReloadTable()
+        presenter.notificationAddObserverReloadTable()
     }
     // MARK: - setup TableView
+    
    private func setupTableView() {
         savedView.tableView.dataSource = self
     }
 }
+// MARK: - extension View
 
 extension SavedFilmsVC: SavedFilmsVCProtocol {
     func reloadTableView() {
@@ -58,7 +60,7 @@ extension SavedFilmsVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SavedFilmCell.ideintifier, for: indexPath) as? SavedFilmCell else {fatalError()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SavedFilmCell.identifier, for: indexPath) as? SavedFilmCell else {fatalError()}
         let array = saveArray[indexPath.row]
         let model = SavedFilmCell.ViewModel(movieName: array.nameMovie,
                                             movieCategory: array.countryMovie,

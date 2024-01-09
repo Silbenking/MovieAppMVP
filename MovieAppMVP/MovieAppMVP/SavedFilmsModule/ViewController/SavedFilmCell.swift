@@ -9,7 +9,7 @@ import UIKit
 
 class SavedFilmCell: UITableViewCell {
 
-    static let ideintifier = "SavedFilmCell"
+    static let identifier = "SavedFilmCell"
     
     private lazy var movieImage: UIImageView = {
         let image = UIImageView()
@@ -32,6 +32,23 @@ class SavedFilmCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - UIConstant
+
+    private enum UIConstant {
+        static let movieImageSize: CGFloat = 150
+        static let movieImageTop: CGFloat = 10
+        static let movieImageBottom: CGFloat = 10
+        static let movieImageLeading: CGFloat = 25
+        
+        static let nameMovieLabelTop: CGFloat = 40
+        static let nameMovieLabelTrailing: CGFloat = 5
+        static let nameMovieLabelLeading: CGFloat = 10
+        
+        static let categoryMovieLabelBottom: CGFloat = 40
+        static let categoryMovieLabelLeading: CGFloat = 10
+
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
@@ -47,20 +64,20 @@ class SavedFilmCell: UITableViewCell {
         contentView.backgroundColor = .black
         
         movieImage.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 150, height: 150))
-            make.top.equalToSuperview().inset(10)
-            make.bottom.equalToSuperview().inset(10)
-            make.leading.equalToSuperview().offset(25)
+            make.size.equalTo(CGSize(width: UIConstant.movieImageSize, height: UIConstant.movieImageSize))
+            make.top.equalToSuperview().inset(UIConstant.movieImageTop)
+            make.bottom.equalToSuperview().inset(UIConstant.movieImageBottom)
+            make.leading.equalToSuperview().offset(UIConstant.movieImageLeading)
         }
         
         nameMovieLabel.snp.makeConstraints { make in
-            make.leading.equalTo(movieImage.snp.trailing).offset(10)
-            make.top.equalToSuperview().inset(40)
-            make.trailing.equalToSuperview().inset(5)
+            make.leading.equalTo(movieImage.snp.trailing).offset(UIConstant.nameMovieLabelLeading)
+            make.top.equalToSuperview().inset(UIConstant.nameMovieLabelTop)
+            make.trailing.equalToSuperview().inset(UIConstant.nameMovieLabelTrailing)
         }
         categoryMovieLabel.snp.makeConstraints { make in
-            make.leading.equalTo(movieImage.snp.trailing).offset(10)
-            make.bottom.equalToSuperview().inset(40)
+            make.leading.equalTo(movieImage.snp.trailing).offset(UIConstant.categoryMovieLabelLeading)
+            make.bottom.equalToSuperview().inset(UIConstant.categoryMovieLabelBottom)
         }
     }
     // MARK: - load Image
@@ -83,6 +100,7 @@ class SavedFilmCell: UITableViewCell {
         
     }
 }
+// MARK: - SavedFilm Cell
 
 extension SavedFilmCell {
     struct ViewModel {

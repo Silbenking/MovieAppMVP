@@ -89,7 +89,7 @@ extension TopChartsViewController: UITableViewDelegate {
         let model = DetailMovieView.ViewModel(nameMovie: detail?.name ?? "name",
                                   movieImage: detail?.poster?.url ?? "test",
                                   countryMovie: detail?.countries?.first?.name ?? "country",
-                                  yearOfRealeseMovie: "\(detail?.year ?? 1)",
+                                  yearOfRealiseMovie: "\(detail?.year ?? 1)",
                                   ratingMovie: "\(detail?.rating?.imdb ?? 8.5)",
                                   descriptionMovie: detail?.description ?? "description")
         router.showDetailMovie(from: self, model: model)

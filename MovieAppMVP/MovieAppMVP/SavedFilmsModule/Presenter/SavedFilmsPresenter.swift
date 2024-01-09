@@ -8,7 +8,7 @@
 import RealmSwift
 
 protocol SavedFilmsPresenterProtocol: AnyObject {
-    func notificatinAddObserverReloadTable()
+    func notificationAddObserverReloadTable()
 }
 
 final class SavedFilmsPresenter {
@@ -19,14 +19,9 @@ final class SavedFilmsPresenter {
 }
 
 extension SavedFilmsPresenter: SavedFilmsPresenterProtocol {
-    func notificatinAddObserverReloadTable() {
-        notificationCenter.addObserver(forName: NSNotification.Name("reloadTable"), object: nil, queue: nil) { [weak self] _ in //всегда ли нужно когда стоит замыкание стаивть weakself?
+    func notificationAddObserverReloadTable() {
+        notificationCenter.addObserver(forName: NSNotification.Name("reloadTable"), object: nil, queue: nil) { [weak self] _ in //всегда ли нужно когда стоит замыкание стаивть weak self?
             self?.view.reloadTableView()
         }
     }
-    
-    func reloadTableViewFilm() {
-    
-    }
-
 }
