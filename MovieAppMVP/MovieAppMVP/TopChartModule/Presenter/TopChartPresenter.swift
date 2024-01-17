@@ -13,9 +13,9 @@ protocol TopChartPresenterProtocol: AnyObject { // описываются те �
 }
 
 final class TopChartPresenter {
-    
+
     weak var view: TopChartVCProtocol!
-    let networMoviewkService = NetworMoviewkService()
+    let networMoviewkService = NetworkMoviekService()
     var dataSource: [TopChartsModel] = []
 
 }
@@ -29,7 +29,7 @@ extension TopChartPresenter: TopChartPresenterProtocol {
                     self?.dataSource.append(movieResult)
                 }
                 self?.view.reloadData()
-        
+
             case let .failure(error):
                 switch error {
                 case .decode:
@@ -40,5 +40,4 @@ extension TopChartPresenter: TopChartPresenterProtocol {
             }
         }
     }
-    
 }

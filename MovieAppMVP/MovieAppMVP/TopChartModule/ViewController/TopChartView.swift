@@ -8,7 +8,7 @@
 import UIKit
 
 public final class TopChartView: UIView {
-    
+
     var tableView: UITableView!
 
     private let topChartLabel: UILabel = {
@@ -19,7 +19,7 @@ public final class TopChartView: UIView {
          label.textAlignment = .left
          return label
      }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         embedViews()
@@ -29,7 +29,7 @@ public final class TopChartView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - setup TableView
 
     func setupTableView() {
@@ -44,16 +44,15 @@ public final class TopChartView: UIView {
         }
     }
     // MARK: - setup Layout
-    
+
     func setupLayout() {
         topChartLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.top.equalTo(self.safeAreaLayoutGuide).inset(30)
         }
-        
     }
     // MARK: - embed Views
-    
+
     func embedViews() {
         [topChartLabel].forEach {self.addSubview($0)}
     }

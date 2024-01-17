@@ -17,10 +17,10 @@ enum NetworkMovieError: Error {
     case decode
 }
 
-final class NetworMoviewkService: NetworMoviewkServiceProtocol {
+final class NetworkMoviekService: NetworMoviewkServiceProtocol {
     
     func fetchData(complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void) {
-       
+        
         AF.request(Constant.movieTopUrl, headers: ["X-API-KEY": Constant.apyKey])
             .validate()
             .response { response in
@@ -42,6 +42,6 @@ final class NetworMoviewkService: NetworMoviewkServiceProtocol {
 
 private enum Constant {
     static let movieTopUrl =  "https://api.kinopoisk.dev/v1.4/movie?page=1&limit=20&selectFields=id&selectFields=name&selectFields=alternativeName&selectFields=enName&selectFields=type&selectFields=year&selectFields=description&selectFields=shortDescription&selectFields=movieLength&selectFields=isSeries&selectFields=ticketsOnSale&selectFields=totalSeriesLength&selectFields=seriesLength&selectFields=ratingMpaa&selectFields=ageRating&selectFields=top10&selectFields=top250&selectFields=typeNumber&selectFields=status&selectFields=names&selectFields=logo&selectFields=poster&selectFields=backdrop&selectFields=rating&selectFields=votes&selectFields=genres&selectFields=countries&selectFields=releaseYears&sortField=top250&notNullFields=top250&sortType=1&lists=top250"
-    
+
     static let apyKey = "WE3Y90J-F3KMXNJ-JY1FPMH-ED418Z5"
 }

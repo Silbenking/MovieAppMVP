@@ -8,20 +8,36 @@
 import RealmSwift
 
 protocol SavedFilmsPresenterProtocol: AnyObject {
-    func notificationAddObserverReloadTable()
+    func loadData()
+    var arrayFilms: [Film] { get set }
+    func clearHandle()
+    func deleteFilm(film: Film)
 }
 
 final class SavedFilmsPresenter {
-    
+
     weak var view: SavedFilmsVCProtocol!
-    var saveArray: Results<SavedModel>!
-    let notificationCenter = NotificationCenter.default
+    let storageService: StorageProtocol
+    var arrayFilms: [Film] = []
+
+    init(storageService: StorageProtocol) {
+        self.storageService = storageService
+    }
 }
 
 extension SavedFilmsPresenter: SavedFilmsPresenterProtocol {
-    func notificationAddObserverReloadTable() {
-        notificationCenter.addObserver(forName: NSNotification.Name("reloadTable"), object: nil, queue: nil) { [weak self] _ in //всегда ли нужно когда стоит замыкание стаивть weak self?
-            self?.view.reloadTableView()
-        }
+    func clearHandle() {
+        storageService.clearAllFilms()
+        arrayFilms = []
+        self.view.reloadTableView()
+    }
+
+    func loadData() {
+        arrayFilms = storageService.read()
+        self.view.reloadTableView()
+    }
+
+    func deleteFilm(film: Film) {
+        storageService.delete(film: film)
     }
 }

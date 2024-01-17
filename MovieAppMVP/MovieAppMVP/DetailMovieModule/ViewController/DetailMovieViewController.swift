@@ -6,75 +6,62 @@
 //
 
 import UIKit
-import SnapKit
-import Kingfisher
-import RealmSwift
 
 protocol DetailMovieVCProtocol: AnyObject {
-    
-    func saveButton()
-    
+
+    func saveFilm()
+    func savedFilm()
+
 }
 
 final class DetailMovieViewController: UIViewController, UIGestureRecognizerDelegate {
-    
-    private var presenter: DetailMoviePresenterProtocol!
-    let detailMovieView = DetailMovieView()
-    var movieDetailModel: DetailMovieView.ViewModel?
-    let realm = try! Realm()
-    
-    let notificationCenter = NotificationCenter.default
 
-    init(presenter: DetailMoviePresenterProtocol) {
+    var presenter: DetailMoviePresenterProtocol!
+    let detailMovieView = DetailMovieView()
+
+    init(presenter: DetailMoviePresenterProtocol) { // не понятно как инициализировать
         super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         self.view = detailMovieView
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.checkButton()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        addActionButton()
+        setupTarget()
     }
-    
+
+    func setupTarget() {
+
+        detailMovieView.saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
+
+    }
 }
 
 extension DetailMovieViewController: DetailMovieVCProtocol {
-    
-    func addActionButton() {
+    func saveFilm() {
+        detailMovieView.saveButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+        detailMovieView.saveButton.setTitle("Сохранено", for: .normal)
+    }
 
-        detailMovieView.saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
-        
+    func savedFilm() {
+        detailMovieView.saveButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        detailMovieView.saveButton.setTitle("Сохранить", for: .normal)
     }
-    
-    func saveButton() {
-        detailMovieView.saveButton.isSelected = !detailMovieView.saveButton.isSelected
-        let value = SavedModel(value: [movieDetailModel?.nameMovie, movieDetailModel?.countryMovie, movieDetailModel?.movieImage])
-        if detailMovieView.saveButton.isSelected {
-            detailMovieView.saveButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
-            detailMovieView.saveButton.setTitle("Сохранено", for: .normal)
-            try! realm.write({
-                realm.add(value)
-            })
-            presenter.notificationReloadTable()
-        } else {
-            detailMovieView.saveButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
-            detailMovieView.saveButton.setTitle("Сохранить", for: .normal)
-            try! realm.write({
-                realm.delete(realm.objects(SavedModel.self))
-            })
-            presenter.notificationReloadTable()
-    }
-}
-    
+
     @objc func saveAction() {
         presenter.handleSaveMovieButton()
     }
-    
+
 }

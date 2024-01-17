@@ -8,13 +8,12 @@
 import UIKit
 
 struct SavedFilmsAssemble {
-    
+
     static func assemble() -> UIViewController {
-        
-        let presenter = SavedFilmsPresenter()
+        let storage = Storage()
+        let presenter = SavedFilmsPresenter(storageService: storage)
         let viewController = SavedFilmsVC(presenter: presenter)
         presenter.view = viewController
         return viewController
-        
     }
 }

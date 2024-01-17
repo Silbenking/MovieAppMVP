@@ -14,7 +14,7 @@ struct TopChartsModel: Decodable {
 
 // MARK: - Doc
 struct Doc: Decodable {
-    
+    let id: Int
     let rating: Rating?
     let name, description: String?
     let year: Int?

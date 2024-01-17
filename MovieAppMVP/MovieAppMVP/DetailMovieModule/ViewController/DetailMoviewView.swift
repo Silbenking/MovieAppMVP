@@ -7,14 +7,14 @@
 
 import UIKit
 
-class DetailMovieView: UIView {
-    
+final class DetailMovieView: UIView {
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .black
         return scrollView
     }()
-    
+
     private lazy var movieImage: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
@@ -22,7 +22,7 @@ class DetailMovieView: UIView {
         image.clipsToBounds = true
         return image
     }()
-    
+
     private lazy var nameMovieLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: UIConstant.nameMovieLabelFontSize)
@@ -31,7 +31,7 @@ class DetailMovieView: UIView {
         label.textColor = .white
         return label
     }()
-    
+
     private lazy var yearOfReleaseLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: UIConstant.yearOfReleaseLabelFontSize)
@@ -39,7 +39,7 @@ class DetailMovieView: UIView {
         label.textColor = .systemGray
         return label
     }()
-    
+
     private lazy var countryMovieLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: UIConstant.countryMovieLabelFontSize)
@@ -54,7 +54,7 @@ class DetailMovieView: UIView {
         image.contentMode = .scaleAspectFit
         return image
     }()
-    
+
     private lazy var ratingTextLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: UIConstant.ratingTextLabelFontSize, weight: .bold)
@@ -62,17 +62,17 @@ class DetailMovieView: UIView {
         label.textColor = .systemGray
         return label
     }()
-    
+
     private lazy var descriptionMovieLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .systemGray
         label.font = .systemFont(ofSize: UIConstant.descriptionMovieLabelFontSize)
         label.isUserInteractionEnabled = true
-        label.numberOfLines = 7
+        label.numberOfLines = 6
         return label
     }()
-    
+
     private lazy var readMoreButton: UIButton = {
         let button = UIButton()
         button.setTitle("читать больше..", for: .normal)
@@ -80,20 +80,19 @@ class DetailMovieView: UIView {
         button.setTitleColor(UIColor.secondaryLabel, for: .highlighted)
         return button
     }()
-    
+
      let saveButton: UIButton = {
         var configuration = UIButton.Configuration.filled()
          configuration.imagePadding = UIConstant.saveButtonButtonImagePadding
         configuration.cornerStyle = .capsule
          configuration.baseBackgroundColor = .orange.withAlphaComponent(UIConstant.saveButtonWithAlphaComponent)
-        
+
         let button = UIButton(configuration: configuration, primaryAction: nil)
-        button.setTitle("Сохранить", for: .normal)
         button.setImage(UIImage(systemName: "bookmark"), for: .normal)
         return button
-        
+
     }()
-    
+
     // MARK: - UIConstant
 
     private enum UIConstant {
@@ -106,7 +105,7 @@ class DetailMovieView: UIView {
         static let readMoreButtonFontSize: CGFloat = 12
         static let saveButtonButtonImagePadding: CGFloat = 10
         static let saveButtonWithAlphaComponent: CGFloat = 0.8
-        
+
         static let scrollViewTop: CGFloat = 60
         static let movieImageHeight: CGFloat = 442
         static let nameMovieLabelTop: CGFloat = 10
@@ -128,32 +127,45 @@ class DetailMovieView: UIView {
         static let saveButtonBottom: CGFloat = 50
         static let saveButtonHeight: CGFloat = 42
         static let saveButtonWidth: CGFloat = 211
-
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         embedViews()
         setupLayout()
         addTarget()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    // MARK: - configure Cell
+
+    func configure(with model: Film) {
+        guard let url = URL(string: model.movieImage ) else {return}
+        movieImage.kf.setImage(with: url)
+        movieImage.kf.indicatorType = .activity
+
+        nameMovieLabel.text = model.nameMovie
+        countryMovieLabel.text = model.countryMovie
+        yearOfReleaseLabel.text = model.yearOfRealiseMovie
+        ratingTextLabel.text = model.ratingMovie
+        descriptionMovieLabel.text = model.descriptionMovie
+    }
+
     private func addTarget() {
-        
+
         readMoreButton.addTarget(self, action: #selector(labelAction), for: .touchUpInside)
     }
     // MARK: - label Action
-    
+
     @objc func labelAction() {
-            if descriptionMovieLabel.numberOfLines == 7 {
+            if descriptionMovieLabel.numberOfLines == 6 {
                 descriptionMovieLabel.numberOfLines = 0
                 readMoreButton.setTitle("Свернуть", for: .normal)
             } else {
-                descriptionMovieLabel.numberOfLines = 7
+                descriptionMovieLabel.numberOfLines = 6
                 readMoreButton.setTitle("читать больше..", for: .normal)
             }
     }
@@ -170,93 +182,67 @@ class DetailMovieView: UIView {
             make.width.equalToSuperview()
             make.height.equalTo(UIConstant.movieImageHeight)
         }
-        
+
         nameMovieLabel.snp.makeConstraints { make in
             make.top.equalTo(movieImage.snp.bottom).offset(UIConstant.nameMovieLabelTop)
             make.leading.equalToSuperview().offset(UIConstant.nameMovieLabelLeading)
             make.width.equalTo(UIConstant.nameMovieLabelWidth)
         }
-        
+
         countryMovieLabel.snp.makeConstraints { make in
             make.top.equalTo(nameMovieLabel.snp.bottom).offset(UIConstant.countryMovieLabelTop)
             make.leading.equalToSuperview().offset(UIConstant.countryMovieLabelLeading)
         }
-        
+
         yearOfReleaseLabel.snp.makeConstraints { make in
             make.top.equalTo(nameMovieLabel.snp.bottom).offset(UIConstant.yearOfReleaseLabelTop)
             make.leading.equalTo(countryMovieLabel.snp.trailing).offset(UIConstant.yearOfReleaseLabelLeading)
         }
-        
+
         ratingMovieImage.snp.makeConstraints { make in
             make.top.equalTo(movieImage.snp.bottom).offset(UIConstant.ratingMovieImageTop)
             make.width.equalTo(UIConstant.ratingMovieImageWidth)
             make.leading.equalTo(nameMovieLabel.snp.trailing)
             make.height.equalTo(UIConstant.ratingMovieImageHeight)
         }
-        
+
         ratingTextLabel.snp.makeConstraints { make in
             make.top.equalTo(ratingMovieImage.snp.bottom)
             make.centerX.equalTo(ratingMovieImage.snp.centerX)
         }
-        
+
         descriptionMovieLabel.snp.makeConstraints { make in
             make.top.equalTo(countryMovieLabel.snp.bottom).offset(UIConstant.descriptionMovieLabelTop)
             make.width.equalToSuperview().inset(UIConstant.descriptionMovieLabelWidth)
             make.leading.equalToSuperview().inset(UIConstant.descriptionMovieLabelLeading)
         }
-        
+
         readMoreButton.snp.makeConstraints { make in
             make.top.equalTo(descriptionMovieLabel.snp.bottom).inset(UIConstant.readMoreButtonTop)
             make.leading.equalToSuperview().offset(UIConstant.readMoreButtonLeading)
         }
-        
+
         saveButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(descriptionMovieLabel.snp.bottom).offset(UIConstant.saveButtonTop)
             make.bottom.equalTo(scrollView.snp.bottom).inset(UIConstant.saveButtonBottom)
             make.size.equalTo(CGSize(width: UIConstant.saveButtonWidth, height: UIConstant.saveButtonHeight))
         }
-        
+
     }
     // MARK: - embed Views
-    
+
     private func embedViews() {
-        
+
         self.addSubview(scrollView)
         [movieImage, nameMovieLabel, yearOfReleaseLabel, countryMovieLabel, ratingMovieImage, ratingTextLabel, descriptionMovieLabel, readMoreButton, saveButton].forEach {scrollView.addSubview($0)}
-        
+
     }
     // MARK: - setup Appearance
 
-    func setupAppearance() {
-        
+    private func setupAppearance() {
+
         self.backgroundColor = .black
-        
-    }
-    
-    // MARK: - configure Cell
 
-    func configure(with model: ViewModel) {
-        guard let url = URL(string: model.movieImage ) else {return}
-        movieImage.kf.setImage(with: url)
-        
-        nameMovieLabel.text = model.nameMovie
-        countryMovieLabel.text = model.countryMovie
-        yearOfReleaseLabel.text = model.yearOfRealiseMovie
-        ratingTextLabel.text = model.ratingMovie
-        descriptionMovieLabel.text = model.descriptionMovie
-    }
-    
-}
-// MARK: - extension DetailMovieView
-
-extension DetailMovieView {
-    struct ViewModel {
-        let nameMovie: String
-        let movieImage: String
-        let countryMovie: String
-        let yearOfRealiseMovie: String
-        let ratingMovie: String
-        let descriptionMovie: String
     }
 }

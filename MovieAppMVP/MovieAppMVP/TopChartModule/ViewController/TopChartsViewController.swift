@@ -15,25 +15,25 @@ protocol TopChartVCProtocol: AnyObject {
 }
 
 final class TopChartsViewController: UIViewController {
-    
-    private let router: DetailRouterProtocol = Router.shared
+
+    private let router: DetailRouterProtocol = DetailRouter()
     private var presenter: TopChartPresenterProtocol!
     var topChartArray = [TopChartsModel]()
     let topView = TopChartView()
-    
+
     init(presenter: TopChartPresenterProtocol) {
         super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
     }
-        
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         self.view = topView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.loadData()
@@ -43,15 +43,15 @@ final class TopChartsViewController: UIViewController {
 
 extension TopChartsViewController: TopChartVCProtocol {
     // MARK: - Error networkServixe
-    
+
     func errorDecode() {
         errorAlert(nameError: "Ошибка декодирования")
     }
-    
+
     func errorNetwork() {
         errorAlert(nameError: "Ошибка сети")
     }
-    
+
     // MARK: - Reload Data
 
     func reloadData() {
@@ -59,7 +59,7 @@ extension TopChartsViewController: TopChartVCProtocol {
             self.topView.tableView.reloadData()
         }
     }
-    
+
     func tableViewDelegate() {
         topView.tableView.dataSource = self
         topView.tableView.delegate = self
@@ -70,7 +70,7 @@ extension TopChartsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.dataSource.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TopChartViewCell.identifaerTop, for: indexPath) as? TopChartViewCell else {fatalError()}
         let topChartArray = presenter.dataSource[indexPath.row]
@@ -86,13 +86,13 @@ extension TopChartsViewController: UITableViewDataSource {
 extension TopChartsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detail = presenter.dataSource.first?.docs?[indexPath.row]
-        let model = DetailMovieView.ViewModel(nameMovie: detail?.name ?? "name",
+        let model = Film(id: detail?.id ?? 0, nameMovie: detail?.name ?? "name",
                                   movieImage: detail?.poster?.url ?? "test",
                                   countryMovie: detail?.countries?.first?.name ?? "country",
                                   yearOfRealiseMovie: "\(detail?.year ?? 1)",
                                   ratingMovie: "\(detail?.rating?.imdb ?? 8.5)",
                                   descriptionMovie: detail?.description ?? "description")
         router.showDetailMovie(from: self, model: model)
-        
+
     }
 }

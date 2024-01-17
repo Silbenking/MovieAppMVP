@@ -6,37 +6,58 @@
 //
 
 import Foundation
-import RealmSwift
 
 protocol DetailMoviePresenterProtocol: AnyObject {
     
     func handleSaveMovieButton()
-    func notificationReloadTable()
+    func saveData(film: Film)
+    func deleteFilm(film: Film)
+    var movieDetailPresenterModel: Film? { get set }
+    func checkFilm()
+    func checkButton()
 }
 
-class DetailMoviePresenter {
-    
+final class DetailMoviePresenter {
+
     weak var view: DetailMovieVCProtocol!
-    let notificationCenter = NotificationCenter.default
-    
-//    let realm = try! Realm()
-//    var movieDetailModel: DetailMovieView.ViewModel?
-//    let value = SavedModel(value: [movieDetailModel?.nameMovie, movieDetailModel?.countryMovie, movieDetailModel?.movieImage])
-//
-//    try! realm.write({
-//        realm.add(value)
-//    })
-    
+    var movieDetailPresenterModel: Film?
+    let storageService: StorageProtocol
+
+    init(storageService: StorageProtocol) {
+        self.storageService = storageService
+    }
 }
 
 extension DetailMoviePresenter: DetailMoviePresenterProtocol {
-    
-    func notificationReloadTable() {
-        notificationCenter.post(name: NSNotification.Name("reloadTable"), object: nil)
+    func checkButton() {
+        let check = storageService.checkFilm(film: movieDetailPresenterModel!)
+        if check == true {
+            view.saveFilm()
+        } else {
+            view.savedFilm()
+        }
     }
-    
+
+    func checkFilm() {
+        let check = storageService.checkFilm(film: movieDetailPresenterModel!)
+        if check == true {
+            deleteFilm(film: movieDetailPresenterModel!)
+            view.savedFilm()
+        } else {
+            saveData(film: movieDetailPresenterModel!)
+            view.saveFilm()
+        }
+    }
+
+    func deleteFilm(film: Film) {
+        storageService.delete(film: film)
+    }
+    func saveData(film: Film) {
+        storageService.save(film: film) // тут надо добавить в константу?
+    }
+
     func handleSaveMovieButton() {
-        view.saveButton()
+       checkFilm()
     }
-    
+
 }
