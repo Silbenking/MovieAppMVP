@@ -10,10 +10,7 @@ import Foundation
 struct SaveDetailAssemble {
 
     static func assemble() -> SaveDetailVC {
-        let storage = Storage()
-        let presenter = SaveDetailPresenter(storageService: storage)
-        let viewController = SaveDetailVC(presenter: presenter)
-        presenter.view = viewController
+        let viewController = SaveDetailVC()
         return viewController
     }
 }

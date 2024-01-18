@@ -8,7 +8,7 @@
 import UIKit
 
 final class SaveDetailView: UIView {
-    
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .black
@@ -111,10 +111,8 @@ final class SaveDetailView: UIView {
         static let descriptionMovieLabelLeading: CGFloat = 5
         static let readMoreButtonTop: CGFloat = 5
         static let readMoreButtonLeading: CGFloat = 300
-        static let saveButtonTop: CGFloat = 40
         static let saveButtonBottom: CGFloat = 50
-        static let saveButtonHeight: CGFloat = 42
-        static let saveButtonWidth: CGFloat = 211
+      
 
     }
 
@@ -204,6 +202,7 @@ final class SaveDetailView: UIView {
             make.top.equalTo(countryMovieLabel.snp.bottom).offset(UIConstant.descriptionMovieLabelTop)
             make.width.equalToSuperview().inset(UIConstant.descriptionMovieLabelWidth)
             make.leading.equalToSuperview().inset(UIConstant.descriptionMovieLabelLeading)
+            make.bottom.equalTo(scrollView.snp.bottom).inset(UIConstant.saveButtonBottom)
         }
 
         readMoreButton.snp.makeConstraints { make in
