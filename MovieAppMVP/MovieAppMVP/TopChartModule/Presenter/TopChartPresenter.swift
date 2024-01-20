@@ -25,11 +25,15 @@ extension TopChartPresenter: TopChartPresenterProtocol {
         networMoviewkService.fetchData { [weak self] result in
             switch result {
             case .success(let movieResult):
-                for _ in movieResult.docs! {
-                    self?.dataSource.append(movieResult)
+                if let docs = movieResult.docs {
+                    for _ in docs {
+                        self?.dataSource.append(movieResult)
+                    }
+                    self?.view.reloadData()
+                } else {
+                    // Обработка ситуации, когда movieResult.docs равен nil
+                    print("movieResult.docs is nil")
                 }
-                self?.view.reloadData()
-
             case let .failure(error):
                 switch error {
                 case .decode:

@@ -22,6 +22,6 @@ final class SaveDetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
     }
 }

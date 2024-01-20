@@ -48,7 +48,7 @@ public final class TopChartView: UIView {
     func setupLayout() {
         topChartLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
-            make.top.equalTo(self.safeAreaLayoutGuide).inset(30)
+            make.top.equalTo(self.safeAreaLayoutGuide).inset(10)
         }
     }
     // MARK: - embed Views

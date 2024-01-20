@@ -26,9 +26,15 @@ final class MovieTabBarVC: UITabBarController {
         savedVC.navigationBar.barTintColor = .black
         savedVC.navigationBar.backgroundColor = .black
         savedVC.navigationBar.tintColor = .orange.withAlphaComponent(0.8)
+        
+        let searchFilmVC = UINavigationController(rootViewController: SearchFilmAssemble.assemble())
+        searchFilmVC.navigationBar.barTintColor = .black
+        searchFilmVC.navigationBar.backgroundColor = .black
+        searchFilmVC.navigationBar.tintColor = .orange.withAlphaComponent(0.8)
 
         viewControllers = [generateVCWithItem(viewController: topChartVC, tabBarItem: TabBarItem.topItem),
-                           generateVCWithItem(viewController: savedVC, tabBarItem: TabBarItem.favoriteItem)]
+                           generateVCWithItem(viewController: savedVC, tabBarItem: TabBarItem.favoriteItem),
+                           generateVCWithItem(viewController: searchFilmVC, tabBarItem: TabBarItem.searchItem)]
 
     }
 
@@ -71,4 +77,6 @@ private enum TabBarItem {
 
     static let topItem = Asset(title: "Топ", image: UIImage(systemName: "house.fill"))
     static let favoriteItem = Asset(title: "Избранное", image: UIImage(systemName: "heart.fill"))
+    static let searchItem = Asset(title: "Поиск", image: UIImage(systemName: "magnifyingglass.circle"))
+
 }

@@ -112,7 +112,6 @@ final class SaveDetailView: UIView {
         static let readMoreButtonTop: CGFloat = 5
         static let readMoreButtonLeading: CGFloat = 300
         static let saveButtonBottom: CGFloat = 50
-      
 
     }
 

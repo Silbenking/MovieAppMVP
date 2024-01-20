@@ -10,6 +10,7 @@ import Alamofire
 
 protocol NetworMoviewkServiceProtocol {
     func fetchData(complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
+    func fetchFilm(urlString: String,complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
 }
 
 enum NetworkMovieError: Error {
@@ -22,6 +23,26 @@ final class NetworkMoviekService: NetworMoviewkServiceProtocol {
     func fetchData(complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void) {
         
         AF.request(Constant.movieTopUrl, headers: ["X-API-KEY": Constant.apyKey])
+            .validate()
+            .response { response in
+                guard let data = response.data else {
+                    if response.error != nil {
+                        complition(.failure(.network))
+                    }
+                    return
+                }
+                let decoder = JSONDecoder()
+                guard let moviewResult = try? decoder.decode(TopChartsModel.self, from: data) else {
+                    complition(.failure(.decode))
+                    return
+                }
+                complition(.success(moviewResult))
+            }
+    }
+
+    func fetchFilm(urlString: String, complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void) {
+        
+        AF.request(urlString, headers: ["X-API-KEY": Constant.apyKey])
             .validate()
             .response { response in
                 guard let data = response.data else {

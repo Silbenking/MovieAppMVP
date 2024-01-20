@@ -1,33 +1,33 @@
 //
-//  SavedFilmView.swift
+//  SearchFilmView.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 31.12.2023.
+//  Created by Сергей Сырбу on 19.01.2024.
 //
 
 import UIKit
 
-final class SavedFilmView: UIView {
+final class SearchFilmView: UIView {
 
-   lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SavedFilmCell.self, forCellReuseIdentifier: SavedFilmCell.identifier)
+        tableView.register(SearchFilmCell.self, forCellReuseIdentifier: SearchFilmCell.identifier)
         tableView.backgroundColor = .black
         tableView.rowHeight = UITableView.automaticDimension
         return tableView
     }()
 
-    lazy var clearButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Очистить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.secondaryLabel, for: .highlighted)
-        return button
+    lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Поиск"
+        searchBar.barTintColor = .black
+        searchBar.searchTextField.textColor = .white
+        return searchBar
     }()
 
-    private lazy var savedLabel: UILabel = {
+    private lazy var searchLabel: UILabel = {
         let label = UILabel()
-        label.text = "Избранное"
+        label.text = "Поиск фильмов"
         label.font = .systemFont(ofSize: UIConstant.savedLabelSize, weight: .bold)
         label.textColor = .orange.withAlphaComponent(UIConstant.savedLabelWithAlphaComponent)
         label.textAlignment = .left
@@ -43,43 +43,43 @@ final class SavedFilmView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    // MARK: - setup View
 
     private func setupView() {
-        addSubview(savedLabel)
+        addSubview(searchLabel)
         addSubview(tableView)
-        addSubview(clearButton)
+        addSubview(searchBar)
+        backgroundColor = .black
+
     }
 
-    // MARK: - setup Layout
-
     private func setupLayout() {
-        savedLabel.snp.makeConstraints { make in
+
+        searchLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(UIConstant.savedLabelLeading)
             make.top.equalTo(self.safeAreaLayoutGuide).inset(UIConstant.savedLabelTop)
         }
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(savedLabel.snp.bottom).inset(UIConstant.tableTop)
-            make.bottom.leading.trailing.equalToSuperview().inset(UIConstant.tableHorizontal)
+
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(searchLabel.snp.bottom).inset(UIConstant.searchBarTop)
+            make.horizontalEdges.equalToSuperview().inset(10)
         }
-        clearButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(UIConstant.clearButtonTrailing)
-            make.top.equalTo(self.safeAreaLayoutGuide).inset(UIConstant.savedLabelTop)
+
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(searchLabel.snp.bottom).inset(UIConstant.tableTop)
+            make.bottom.leading.trailing.equalToSuperview().inset(UIConstant.tableHorizontal)
         }
     }
 }
 
-private extension SavedFilmView {
-    // MARK: - UIConstant
-
+private extension SearchFilmView {
     private enum UIConstant {
         static let savedLabelSize: CGFloat = 30
         static let savedLabelWithAlphaComponent: CGFloat = 0.8
         static let savedLabelLeading: CGFloat = 20
         static let savedLabelTop: CGFloat = 10
-        static let tableTop: CGFloat = -30
+        static let tableTop: CGFloat = -70
         static let tableHorizontal: CGFloat = 10
-        static let clearButtonTrailing: CGFloat = 10
+        static let searchBarTop: CGFloat = -20
 
     }
 }

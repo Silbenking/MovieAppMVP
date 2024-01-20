@@ -37,7 +37,7 @@ final class Storage: StorageProtocol {
         })
     }
 
-    func checkFilm(film: Film) -> Bool  {
+    func checkFilm(film: Film) -> Bool {
 
         let filmId = film.id
         let film = realm.objects(SavedModel.self).filter("id == %@", filmId).first
