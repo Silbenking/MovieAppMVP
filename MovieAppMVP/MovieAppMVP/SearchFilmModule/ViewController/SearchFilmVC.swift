@@ -63,13 +63,13 @@ extension SearchFilmTableVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchFilmCell.identifier, for: indexPath) as? SearchFilmCell else {fatalError()}
-        let detail = presenter.dataSource.first?.docs?[indexPath.row]
-        let model = Film(id: detail?.id ?? 0, nameMovie: detail?.name ?? "name",
-                         movieImage: detail?.poster?.url ?? "test",
-                         countryMovie: detail?.countries?.first?.name ?? "country",
-                         yearOfRealiseMovie: "\(detail?.year ?? 1)",
-                         ratingMovie: "\(detail?.rating?.imdb ?? 8.5)",
-                         descriptionMovie: detail?.description ?? "description")
+        let detail = presenter.dataSource[indexPath.row]
+        let model = Film(id: detail.id, nameMovie: detail.name ?? "name",
+                         movieImage: detail.poster?.url ?? "test",
+                         countryMovie: detail.countries?.first?.name ?? "country",
+                         yearOfRealiseMovie: "\(detail.year ?? 1)",
+                         ratingMovie: "\(detail.rating?.imdb ?? 8.5)",
+                         descriptionMovie: detail.description ?? "description")
         cell.configure(with: model)
         return cell
     }
@@ -80,7 +80,7 @@ extension SearchFilmTableVC: UISearchBarDelegate {
         let text = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         if text != "" {
             presenter.inputText(text: text ?? "nil")
-            searchView.tableView.reloadData()
+//            searchView.tableView.reloadData()
         } else {
             presenter.dataSource = []
         }

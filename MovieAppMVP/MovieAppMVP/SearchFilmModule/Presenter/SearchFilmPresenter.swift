@@ -9,7 +9,7 @@ import Foundation
 
 protocol SearchFilmPresenterProtocol: AnyObject {
     func loadSearchFilm(filmName: String)
-    var dataSource: [TopChartsModel] {get set}
+    var dataSource: [Doc] {get set}
     func inputText(text: String)
 }
 
@@ -17,7 +17,7 @@ final class SearchFilmPresenter {
 
     weak var view: SearchFilmTableVCProtocol!
     let networkService = NetworkMoviekService()
-    var dataSource: [TopChartsModel] = []
+    var dataSource: [Doc] = []
     var timer: Timer?
 }
 
@@ -34,14 +34,14 @@ extension SearchFilmPresenter: SearchFilmPresenterProtocol {
         networkService.fetchFilm(urlString: url) { [weak self] result in
             switch result {
             case .success(let filmResult):
-                for _ in filmResult.docs! {
-                    self?.dataSource.append(filmResult)
-                }
-                let sortedResult =  self?.dataSource.sorted { firstItem, secondItem in
-                    return firstItem.docs?.first?.name?.compare(secondItem.docs?.first?.name ?? "nil") == ComparisonResult.orderedAscending
-                }
-                self?.dataSource = sortedResult!
-                self?.view.reloadData()
+               if let sortedResult = filmResult.docs?.sorted { firstItem, secondItem in
+                    return firstItem.name?.compare(secondItem.name ?? "nil") == ComparisonResult.orderedAscending
+               } {
+                   self?.dataSource = sortedResult
+                   self?.view.reloadData()
+               } else {
+                   print("sortedResult является nil")
+               }
             case let .failure(error):
                 switch error {
                 case .network:
