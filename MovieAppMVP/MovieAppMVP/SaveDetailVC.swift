@@ -19,9 +19,4 @@ final class SaveDetailVC: UIViewController {
     override func loadView() {
         self.view = detailMovieView
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
 }

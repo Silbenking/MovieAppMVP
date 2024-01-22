@@ -15,6 +15,7 @@ final class SearchFilmTableVC: UIViewController {
 
     private var presenter: SearchFilmPresenterProtocol!
     private let searchView = SearchFilmView()
+    private let router = SearchFilmRouter()
     
     init(presenter: SearchFilmPresenterProtocol) {
         super.init(nibName: nil, bundle: nil)
@@ -37,11 +38,11 @@ final class SearchFilmTableVC: UIViewController {
 
     private func setupTableView() {
         searchView.tableView.dataSource = self
+        searchView.tableView.delegate = self
     }
 
     private func setupSearchBar() {
         searchView.searchBar.delegate = self
-//        navigationItem.searchController = searchView.searchController
         definesPresentationContext = false
         navigationItem.hidesSearchBarWhenScrolling = false
     }
@@ -75,14 +76,21 @@ extension SearchFilmTableVC: UITableViewDataSource {
     }
 }
 
+extension SearchFilmTableVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detail = presenter.dataSource[indexPath.row]
+        let model = Film(id: detail.id, nameMovie: detail.name ?? "name", movieImage: detail.poster?.url ?? "test", countryMovie: detail.countries?.first?.name ?? "country", yearOfRealiseMovie: "\(detail.year ?? 8)", ratingMovie: "\(detail.rating?.imdb ?? 8.5)", descriptionMovie: detail.description ?? "description")
+        router.showDetailMovie(from: self, model: model)
+    }
+}
+
 extension SearchFilmTableVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let text = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         if text != "" {
             presenter.inputText(text: text ?? "nil")
-//            searchView.tableView.reloadData()
         } else {
-            presenter.dataSource = []
+            presenter.dataSource = [] // не получаеться сделать массив пустым 
         }
     }
 }

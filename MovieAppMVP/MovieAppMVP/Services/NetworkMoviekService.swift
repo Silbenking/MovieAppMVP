@@ -10,7 +10,7 @@ import Alamofire
 
 protocol NetworMoviewkServiceProtocol {
     func fetchData(complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
-    func fetchFilm(urlString: String,complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
+    func fetchFilm(urlString: String, complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
 }
 
 enum NetworkMovieError: Error {

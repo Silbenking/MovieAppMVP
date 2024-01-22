@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class SearchFilmCell: UITableViewCell {
+final class SearchFilmCell: UITableViewCell {
 
     static let identifier = "SearchFilmCell"
     
