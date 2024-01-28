@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 import Realm
 
-class SavedModel: Object {
+final class SavedModel: Object {
     @Persisted var id = 0
     @Persisted var nameMovie = ""
     @Persisted var countryMovie = ""
@@ -22,19 +22,27 @@ class SavedModel: Object {
 
 protocol StorageProtocol {
     func delete(film: Film)
-    func save(film: Film) -> SavedModel
+    func save(film: Film)
     func read() -> [Film]
     func checkFilm(film: Film) -> Bool
     func clearAllFilms()
-//    var swiftModel: [SavedModel] {get}
 }
 
 final class Storage: StorageProtocol {
+
+    var presenter: DetailMoviePresenterProtocol?
+
+    let realm = try! Realm()
+
     func clearAllFilms() {
         let object = realm.objects(SavedModel.self)
-        try! realm.write({
-            realm.delete(object)
-        })
+        do {
+            try realm.write({ // Если ставим опциональный try, то пишет что catch не нужен
+                realm.delete(object)
+            })
+        } catch {
+            presenter?.errorDelete()
+        }
     }
 
     func checkFilm(film: Film) -> Bool {
@@ -51,39 +59,34 @@ final class Storage: StorageProtocol {
         }
     }
 
-    let realm = try! Realm()
-
     func delete(film: Film) {
         let filmId = film.id
         let film = realm.objects(SavedModel.self).filter("id == %@", filmId).first
         if let film = film {
-            try! realm.write({
-                realm.delete(film)
-            })
+            do {
+                try realm.write({
+                    realm.delete(film)
+                })
+            } catch {
+                presenter?.errorDelete()
+            }
         }
     }
 
-    func save(film: Film) -> SavedModel {
+    func save(film: Film) {
         let object = SavedModel(value: [film.id, film.nameMovie, film.countryMovie, film.movieImage, film.yearOfRealiseMovie, film.ratingMovie, film.descriptionMovie])
-        try! realm.write({
-                 realm.add(object)
-             })
-        return object
+        do {
+            try realm.write({
+                realm.add(object)
+            })
+        } catch {
+            presenter?.errorSaved()
+        }
     }
 
     func read() -> [Film] {
         let object = realm.objects(SavedModel.self)
-        let films = Array(object.map {Film(id: $0.id, nameMovie: $0.nameMovie, movieImage: $0.imageMovie, countryMovie: $0.countryMovie, yearOfRealiseMovie: $0.yearOfRealiseMovie, ratingMovie: $0.ratingMovie, descriptionMovie: $0.descriptionMovie)})
+        let films = Array(object.map {Film(filmRealm: $0)})
         return films
         }
     }
-
-struct Film: Equatable {
-    let id: Int
-    let nameMovie: String
-    let movieImage: String
-    let countryMovie: String
-    let yearOfRealiseMovie: String
-    let ratingMovie: String
-    let descriptionMovie: String
-}

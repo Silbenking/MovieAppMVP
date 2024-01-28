@@ -11,12 +11,13 @@ protocol DetailMovieVCProtocol: AnyObject {
 
     func saveFilm()
     func savedFilm()
-
+    func errorSaved()
+    func errorDelete()
 }
 
 final class DetailMovieViewController: UIViewController, UIGestureRecognizerDelegate {
 
-    var presenter: DetailMoviePresenterProtocol!
+    var presenter: DetailMoviePresenterProtocol?
     let detailMovieView = DetailMovieView()
 
     init(presenter: DetailMoviePresenterProtocol) { // не понятно как инициализировать
@@ -34,7 +35,7 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.checkButton()
+        presenter?.checkButton()
     }
 
     override func viewDidLoad() {
@@ -50,6 +51,14 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
 }
 
 extension DetailMovieViewController: DetailMovieVCProtocol {
+    func errorDelete() {
+        errorAlert(nameError: "Ошибка удаления")
+    }
+
+    func errorSaved() {
+        errorAlert(nameError: "Ошибка сохранения")
+    }
+
     func saveFilm() {
         detailMovieView.saveButton.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
         detailMovieView.saveButton.setTitle("Сохранено", for: .normal)
@@ -61,7 +70,7 @@ extension DetailMovieViewController: DetailMovieVCProtocol {
     }
 
     @objc func saveAction() {
-        presenter.handleSaveMovieButton()
+        presenter?.handleSaveMovieButton()
     }
 
 }

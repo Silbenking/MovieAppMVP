@@ -11,7 +11,8 @@ struct DetailMovieAssemble {
 
     static func assemble() -> DetailMovieViewController {
         let storage = Storage()
-        let presenter = DetailMoviePresenter(storageService: storage)
+        let film = Film()
+        let presenter = DetailMoviePresenter(storageService: storage, movieDetailPresenterModel: film)
         let viewController = DetailMovieViewController(presenter: presenter)
         presenter.view = viewController
         return viewController

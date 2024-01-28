@@ -11,7 +11,7 @@ final class SearchFilmView: UIView {
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SearchFilmCell.self, forCellReuseIdentifier: SearchFilmCell.identifier)
+        tableView.register(FilmCell.self, forCellReuseIdentifier: FilmCell.identifier)
         tableView.backgroundColor = .black
         tableView.rowHeight = UITableView.automaticDimension
         return tableView
@@ -49,7 +49,6 @@ final class SearchFilmView: UIView {
         addSubview(tableView)
         addSubview(searchBar)
         backgroundColor = .black
-
     }
 
     private func setupLayout() {

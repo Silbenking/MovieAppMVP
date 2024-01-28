@@ -25,8 +25,8 @@ final class DetailMovieView: UIView {
 
     private lazy var nameMovieLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: UIConstant.nameMovieLabelFontSize)
-        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: FontSize.nameMovieLabel)
+        label.numberOfLines = .zero
         label.textAlignment = .left
         label.textColor = .white
         return label
@@ -34,7 +34,7 @@ final class DetailMovieView: UIView {
 
     private lazy var yearOfReleaseLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: UIConstant.yearOfReleaseLabelFontSize)
+        label.font = .systemFont(ofSize: FontSize.yearOfReleaseLabel)
         label.textAlignment = .left
         label.textColor = .systemGray
         return label
@@ -42,7 +42,7 @@ final class DetailMovieView: UIView {
 
     private lazy var countryMovieLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: UIConstant.countryMovieLabelFontSize)
+        label.font = .systemFont(ofSize: FontSize.countryMovieLabel)
         label.textAlignment = .left
         label.textColor = .systemGray
         return label
@@ -57,7 +57,7 @@ final class DetailMovieView: UIView {
 
     private lazy var ratingTextLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: UIConstant.ratingTextLabelFontSize, weight: .bold)
+        label.font = .systemFont(ofSize: FontSize.ratingTextLabel, weight: .bold)
         label.textAlignment = .left
         label.textColor = .systemGray
         return label
@@ -67,16 +67,16 @@ final class DetailMovieView: UIView {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = .systemGray
-        label.font = .systemFont(ofSize: UIConstant.descriptionMovieLabelFontSize)
+        label.font = .systemFont(ofSize: FontSize.descriptionMovieLabel)
         label.isUserInteractionEnabled = true
-        label.numberOfLines = 6
+        label.numberOfLines = 5
         return label
     }()
 
     private lazy var readMoreButton: UIButton = {
         let button = UIButton()
         button.setTitle("читать больше..", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: UIConstant.readMoreButtonFontSize)
+        button.titleLabel?.font = .systemFont(ofSize: FontSize.readMoreButton)
         button.setTitleColor(UIColor.secondaryLabel, for: .highlighted)
         return button
     }()
@@ -92,42 +92,6 @@ final class DetailMovieView: UIView {
         return button
 
     }()
-
-    // MARK: - UIConstant
-
-    private enum UIConstant {
-        static let movieImageCornerRadius: CGFloat = 10
-        static let nameMovieLabelFontSize: CGFloat = 32
-        static let yearOfReleaseLabelFontSize: CGFloat = 15
-        static let countryMovieLabelFontSize: CGFloat = 15
-        static let ratingTextLabelFontSize: CGFloat = 32
-        static let descriptionMovieLabelFontSize: CGFloat = 15
-        static let readMoreButtonFontSize: CGFloat = 12
-        static let saveButtonButtonImagePadding: CGFloat = 10
-        static let saveButtonWithAlphaComponent: CGFloat = 0.8
-
-        static let scrollViewTop: CGFloat = 60
-        static let movieImageHeight: CGFloat = 442
-        static let nameMovieLabelTop: CGFloat = 10
-        static let nameMovieLabelLeading: CGFloat = 20
-        static let nameMovieLabelWidth: CGFloat = 250
-        static let countryMovieLabelTop: CGFloat = 7
-        static let countryMovieLabelLeading: CGFloat = 20
-        static let yearOfReleaseLabelTop: CGFloat = 7
-        static let yearOfReleaseLabelLeading: CGFloat = 10
-        static let ratingMovieImageTop: CGFloat = 7
-        static let ratingMovieImageWidth: CGFloat = 100
-        static let ratingMovieImageHeight: CGFloat = 30
-        static let descriptionMovieLabelTop: CGFloat = 10
-        static let descriptionMovieLabelWidth: CGFloat = 10
-        static let descriptionMovieLabelLeading: CGFloat = 5
-        static let readMoreButtonTop: CGFloat = 5
-        static let readMoreButtonLeading: CGFloat = 300
-        static let saveButtonTop: CGFloat = 40
-        static let saveButtonBottom: CGFloat = 50
-        static let saveButtonHeight: CGFloat = 42
-        static let saveButtonWidth: CGFloat = 211
-    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -161,11 +125,11 @@ final class DetailMovieView: UIView {
     // MARK: - label Action
 
     @objc func labelAction() {
-            if descriptionMovieLabel.numberOfLines == 6 {
-                descriptionMovieLabel.numberOfLines = 0
+            if descriptionMovieLabel.numberOfLines == 5 {
+                descriptionMovieLabel.numberOfLines = .zero
                 readMoreButton.setTitle("Свернуть", for: .normal)
             } else {
-                descriptionMovieLabel.numberOfLines = 6
+                descriptionMovieLabel.numberOfLines = 5
                 readMoreButton.setTitle("читать больше..", for: .normal)
             }
     }
@@ -174,61 +138,60 @@ final class DetailMovieView: UIView {
     private func setupLayout() {
         scrollView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalToSuperview().inset(UIConstant.scrollViewTop)
+            make.top.equalToSuperview().inset(Spacing.scrollViewTop)
         }
 
         movieImage.snp.makeConstraints { make in
             make.top.equalTo(scrollView.snp.top)
             make.width.equalToSuperview()
-            make.height.equalTo(UIConstant.movieImageHeight)
+            make.height.equalTo(Size.movieImageHeight)
         }
 
         nameMovieLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieImage.snp.bottom).offset(UIConstant.nameMovieLabelTop)
-            make.leading.equalToSuperview().offset(UIConstant.nameMovieLabelLeading)
-            make.width.equalTo(UIConstant.nameMovieLabelWidth)
+            make.top.equalTo(movieImage.snp.bottom).offset(Spacing.nameMovieLabelTop)
+            make.leading.equalToSuperview().offset(Spacing.nameMovieLabelLeading)
+            make.width.equalTo(Size.nameMovieLabelWidth)
         }
 
         countryMovieLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameMovieLabel.snp.bottom).offset(UIConstant.countryMovieLabelTop)
-            make.leading.equalToSuperview().offset(UIConstant.countryMovieLabelLeading)
+            make.top.equalTo(nameMovieLabel.snp.bottom).offset(Spacing.countryMovieLabelTop)
+            make.leading.equalToSuperview().offset(Spacing.countryMovieLabelLeading)
         }
 
         yearOfReleaseLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameMovieLabel.snp.bottom).offset(UIConstant.yearOfReleaseLabelTop)
-            make.leading.equalTo(countryMovieLabel.snp.trailing).offset(UIConstant.yearOfReleaseLabelLeading)
+            make.top.equalTo(nameMovieLabel.snp.bottom).offset(Spacing.yearOfReleaseLabelTop)
+            make.leading.equalTo(countryMovieLabel.snp.trailing).offset(Spacing.yearOfReleaseLabelLeading)
         }
 
         ratingMovieImage.snp.makeConstraints { make in
-            make.top.equalTo(movieImage.snp.bottom).offset(UIConstant.ratingMovieImageTop)
-            make.width.equalTo(UIConstant.ratingMovieImageWidth)
+            make.top.equalTo(movieImage.snp.bottom).offset(Spacing.ratingMovieImageTop)
+            make.width.equalTo(Size.ratingMovieImageWidth)
             make.leading.equalTo(nameMovieLabel.snp.trailing)
-            make.height.equalTo(UIConstant.ratingMovieImageHeight)
+            make.height.equalTo(Size.ratingMovieImageHeight)
         }
 
         ratingTextLabel.snp.makeConstraints { make in
             make.top.equalTo(ratingMovieImage.snp.bottom)
             make.centerX.equalTo(ratingMovieImage.snp.centerX)
         }
-
+        descriptionMovieLabel.sizeToFit()
         descriptionMovieLabel.snp.makeConstraints { make in
-            make.top.equalTo(countryMovieLabel.snp.bottom).offset(UIConstant.descriptionMovieLabelTop)
-            make.width.equalToSuperview().inset(UIConstant.descriptionMovieLabelWidth)
-            make.leading.equalToSuperview().inset(UIConstant.descriptionMovieLabelLeading)
+            make.top.equalTo(countryMovieLabel.snp.bottom).offset(Spacing.descriptionMovieLabelTop)
+            make.width.equalToSuperview().inset(Size.descriptionMovieLabelWidth)
+            make.leading.equalToSuperview().inset(Spacing.descriptionMovieLabelLeading)
         }
 
         readMoreButton.snp.makeConstraints { make in
-            make.top.equalTo(descriptionMovieLabel.snp.bottom).inset(UIConstant.readMoreButtonTop)
-            make.leading.equalToSuperview().offset(UIConstant.readMoreButtonLeading)
+            make.top.equalTo(descriptionMovieLabel.snp.bottom).inset(Spacing.readMoreButtonTop)
+            make.leading.equalToSuperview().offset(Spacing.readMoreButtonLeading)
         }
 
         saveButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(descriptionMovieLabel.snp.bottom).offset(UIConstant.saveButtonTop)
-            make.bottom.equalTo(scrollView.snp.bottom).inset(UIConstant.saveButtonBottom)
-            make.size.equalTo(CGSize(width: UIConstant.saveButtonWidth, height: UIConstant.saveButtonHeight))
+            make.top.equalTo(descriptionMovieLabel.snp.bottom).offset(Spacing.saveButtonTop)
+            make.bottom.equalTo(scrollView.snp.bottom).inset(Spacing.saveButtonBottom)
+            make.size.equalTo(CGSize(width: Size.saveButtonWidth, height: Size.saveButtonHeight))
         }
-
     }
     // MARK: - embed Views
 
@@ -244,5 +207,47 @@ final class DetailMovieView: UIView {
 
         self.backgroundColor = .black
 
+    }
+    // MARK: - UIConstant
+
+    private enum FontSize {
+            static let nameMovieLabel: CGFloat = 32
+            static let yearOfReleaseLabel: CGFloat = 15
+            static let countryMovieLabel: CGFloat = 15
+            static let ratingTextLabel: CGFloat = 32
+            static let descriptionMovieLabel: CGFloat = 15
+            static let readMoreButton: CGFloat = 12
+        }
+
+    private enum Size {
+            static let nameMovieLabelWidth: CGFloat = 250
+            static let ratingMovieImageWidth: CGFloat = 100
+            static let ratingMovieImageHeight: CGFloat = 30
+            static let saveButtonHeight: CGFloat = 42
+            static let saveButtonWidth: CGFloat = 211
+            static let descriptionMovieLabelWidth: CGFloat = 10
+            static let movieImageHeight: CGFloat = 442
+        }
+
+    private enum Spacing {
+            static let scrollViewTop: CGFloat = 60
+            static let nameMovieLabelTop: CGFloat = 10
+            static let nameMovieLabelLeading: CGFloat = 20
+            static let countryMovieLabelTop: CGFloat = 7
+            static let countryMovieLabelLeading: CGFloat = 20
+            static let yearOfReleaseLabelTop: CGFloat = 7
+            static let yearOfReleaseLabelLeading: CGFloat = 10
+            static let ratingMovieImageTop: CGFloat = 7
+            static let descriptionMovieLabelTop: CGFloat = 10
+            static let descriptionMovieLabelLeading: CGFloat = 5
+            static let readMoreButtonTop: CGFloat = 5
+            static let readMoreButtonLeading: CGFloat = 300
+            static let saveButtonTop: CGFloat = 40
+            static let saveButtonBottom: CGFloat = 50
+        }
+    private enum UIConstant {
+        static let movieImageCornerRadius: CGFloat = 10
+        static let saveButtonButtonImagePadding: CGFloat = 10
+        static let saveButtonWithAlphaComponent: CGFloat = 0.8
     }
 }

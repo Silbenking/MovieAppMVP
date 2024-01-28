@@ -31,7 +31,7 @@ final class SavedFilmsVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.loadData()
+        presenter?.loadData()
     }
 
     override func viewDidLoad() {
@@ -50,7 +50,7 @@ final class SavedFilmsVC: UIViewController {
         savedView.clearButton.addTarget(self, action: #selector(clearFilms), for: .touchUpInside)
     }
    @objc func clearFilms() {
-       presenter.clearHandle()
+       presenter?.clearHandle()
     }
 }
 
@@ -65,14 +65,13 @@ extension SavedFilmsVC: SavedFilmsVCProtocol {
 
 extension SavedFilmsVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.arrayFilms.count
+        presenter?.arrayFilms.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SavedFilmCell.identifier, for: indexPath) as? SavedFilmCell else {fatalError()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmCell.identifier, for: indexPath) as? FilmCell else {fatalError()}
         let array = presenter.arrayFilms[indexPath.row]
-        let model = Film(id: array.id, nameMovie: array.nameMovie, movieImage: array.movieImage, countryMovie: array.countryMovie, yearOfRealiseMovie: array.yearOfRealiseMovie, ratingMovie: array.ratingMovie, descriptionMovie: array.descriptionMovie)
-        cell.configure(with: model)
+        cell.configure(with: array)
         return cell
     }
 }
@@ -81,24 +80,18 @@ extension SavedFilmsVC: UITableViewDataSource {
 extension SavedFilmsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detail = presenter.arrayFilms[indexPath.row]
-        let model = Film(id: detail.id, nameMovie: detail.nameMovie,
-                         movieImage: detail.movieImage,
-                         countryMovie: detail.countryMovie,
-                         yearOfRealiseMovie: detail.yearOfRealiseMovie,
-                         ratingMovie: detail.ratingMovie,
-                         descriptionMovie: detail.descriptionMovie)
-        router.showDetailMovie(from: self, model: model)
+        router.showDetailMovie(from: self, model: detail)
 
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [self] _, _, _ in
-            let editingRow = self.presenter.arrayFilms[indexPath.row]
-            if let index = self.presenter.arrayFilms.firstIndex(of: editingRow) {
-                presenter.arrayFilms.remove(at: index)
-                presenter.deleteFilm(film: editingRow)
+            let editingRow = self.presenter?.arrayFilms[indexPath.row]
+            if let index = self.presenter?.arrayFilms.firstIndex(of: editingRow!) { // и здесь нужно чтобы развернуть nil надо структуру целую пробрасывать
+                presenter?.arrayFilms.remove(at: index)
+                presenter?.deleteFilm(film: editingRow!) // здесь также
             }
-            presenter.loadData() // здесь нужно просто обновить таблицу или нужно с обновлением хранилища
+            presenter?.loadData() // здесь нужно просто обновить таблицу или нужно с обновлением хранилища
         }
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }

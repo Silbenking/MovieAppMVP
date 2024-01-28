@@ -35,7 +35,7 @@ public final class TopChartView: UIView {
     func setupTableView() {
         tableView = UITableView()
         self.addSubview(tableView)
-        tableView.register(TopChartViewCell.self, forCellReuseIdentifier: TopChartViewCell.identifaerTop)
+        tableView.register(FilmCell.self, forCellReuseIdentifier: FilmCell.identifier)
         tableView.backgroundColor = .black
         tableView.rowHeight = UITableView.automaticDimension
         tableView.snp.makeConstraints { make in

@@ -11,7 +11,7 @@ final class SavedFilmView: UIView {
 
    lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SavedFilmCell.self, forCellReuseIdentifier: SavedFilmCell.identifier)
+        tableView.register(FilmCell.self, forCellReuseIdentifier: FilmCell.identifier)
         tableView.backgroundColor = .black
         tableView.rowHeight = UITableView.automaticDimension
         return tableView

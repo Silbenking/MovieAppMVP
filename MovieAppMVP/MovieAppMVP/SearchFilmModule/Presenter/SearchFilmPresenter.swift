@@ -9,19 +9,32 @@ import Foundation
 
 protocol SearchFilmPresenterProtocol: AnyObject {
     func loadSearchFilm(filmName: String)
-    var dataSource: [Doc] {get set}
+    var dataSource: [Film] {get set}
     func inputText(text: String)
+    func reloadData()
 }
 
 final class SearchFilmPresenter {
 
     weak var view: SearchFilmTableVCProtocol!
-    let networkService = NetworkMoviekService()
-    var dataSource: [Doc] = []
+    let networkService: NetworMoviewkServiceProtocol
+    var dataSource: [Film] = [] {
+        didSet {
+            view.reloadData()
+        }
+    }
     var timer: Timer?
+    
+    init(networkService: NetworMoviewkServiceProtocol) {
+        self.networkService = networkService
+    }
 }
 
 extension SearchFilmPresenter: SearchFilmPresenterProtocol {
+    func reloadData() {
+        view.reloadData()
+    }
+
     func inputText(text: String) {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
@@ -30,24 +43,25 @@ extension SearchFilmPresenter: SearchFilmPresenterProtocol {
     }
 
     func loadSearchFilm(filmName: String) {
-        let url = "https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=10&query=\(filmName)"
-        networkService.fetchFilm(urlString: url) { [weak self] result in
+        timer = nil
+        networkService.fetchFilm(urlString: filmName) { [weak self] result in
             switch result {
             case .success(let filmResult):
-               if let sortedResult = filmResult.docs?.sorted { firstItem, secondItem in
-                    return firstItem.name?.compare(secondItem.name ?? "nil") == ComparisonResult.orderedAscending
-               } {
-                   self?.dataSource = sortedResult
+//                
+//                if let sortedResult = filmResult.sorted(by: { firstItem, secondItem in
+//                    return firstItem.name?.compare(secondItem.name ?? "nil") == ComparisonResult.orderedAscending
+//                }) {
+                self?.dataSource.append(filmResult)
                    self?.view.reloadData()
-               } else {
-                   print("sortedResult является nil")
-               }
+//               } else {
+//                   print("sortedResult является nil")
+//               }
             case let .failure(error):
                 switch error {
                 case .network:
-                    print("проблема с ссылкой")
+                    self?.view.errorNetwork()
                 case .decode:
-                    print("проблема с декодированием")
+                    self?.view.errorDecode()
                 }
             }
         }

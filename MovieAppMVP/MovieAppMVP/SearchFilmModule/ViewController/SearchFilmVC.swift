@@ -9,6 +9,8 @@ import UIKit
 
 protocol SearchFilmTableVCProtocol: AnyObject {
     func reloadData()
+    func errorDecode()
+    func errorNetwork()
 }
 
 final class SearchFilmTableVC: UIViewController {
@@ -36,6 +38,12 @@ final class SearchFilmTableVC: UIViewController {
         setupSearchBar()
     }
 
+    func reloadData() {
+            DispatchQueue.main.async {
+                self.searchView.tableView.reloadData()
+            }
+        }
+
     private func setupTableView() {
         searchView.tableView.dataSource = self
         searchView.tableView.delegate = self
@@ -49,29 +57,24 @@ final class SearchFilmTableVC: UIViewController {
 }
 
 extension SearchFilmTableVC: SearchFilmTableVCProtocol {
-    func reloadData() {
-        DispatchQueue.main.async {
-            self.searchView.tableView.reloadData()
-        }
+    func errorDecode() {
+        errorAlert(nameError: "Ошибка декодирования")
     }
 
+    func errorNetwork() {
+        errorAlert(nameError: "Ошибка сети")
+    }
 }
 
 extension SearchFilmTableVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.dataSource.count
+         presenter.dataSource.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchFilmCell.identifier, for: indexPath) as? SearchFilmCell else {fatalError()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmCell.identifier, for: indexPath) as? FilmCell else {fatalError()}
         let detail = presenter.dataSource[indexPath.row]
-        let model = Film(id: detail.id, nameMovie: detail.name ?? "name",
-                         movieImage: detail.poster?.url ?? "test",
-                         countryMovie: detail.countries?.first?.name ?? "country",
-                         yearOfRealiseMovie: "\(detail.year ?? 1)",
-                         ratingMovie: "\(detail.rating?.imdb ?? 8.5)",
-                         descriptionMovie: detail.description ?? "description")
-        cell.configure(with: model)
+        cell.configure(with: detail)
         return cell
     }
 }
@@ -79,18 +82,18 @@ extension SearchFilmTableVC: UITableViewDataSource {
 extension SearchFilmTableVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detail = presenter.dataSource[indexPath.row]
-        let model = Film(id: detail.id, nameMovie: detail.name ?? "name", movieImage: detail.poster?.url ?? "test", countryMovie: detail.countries?.first?.name ?? "country", yearOfRealiseMovie: "\(detail.year ?? 8)", ratingMovie: "\(detail.rating?.imdb ?? 8.5)", descriptionMovie: detail.description ?? "description")
-        router.showDetailMovie(from: self, model: model)
+        router.showDetailMovie(from: self, model: detail)
     }
 }
 
 extension SearchFilmTableVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let text = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        if text != "" {
-            presenter.inputText(text: text ?? "nil")
+        let textWithoutSpaces = searchText.replacingOccurrences(of: " ", with: "")
+        if textWithoutSpaces.isEmpty {
+            presenter.dataSource = []
         } else {
-            presenter.dataSource = [] // не получаеться сделать массив пустым 
+            let text = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+            presenter.inputText(text: text ?? "nil")
         }
     }
 }

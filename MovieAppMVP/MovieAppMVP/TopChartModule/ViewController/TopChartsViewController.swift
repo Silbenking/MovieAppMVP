@@ -17,7 +17,7 @@ protocol TopChartVCProtocol: AnyObject {
 final class TopChartsViewController: UIViewController {
 
     private let router: DetailRouterProtocol = DetailRouter()
-    private var presenter: TopChartPresenterProtocol!
+    private var presenter: TopChartPresenterProtocol?
     var topChartArray = [TopChartsModel]()
     let topView = TopChartView()
 
@@ -36,7 +36,7 @@ final class TopChartsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.loadData()
+        presenter?.loadData()
         tableViewDelegate()
     }
 }
@@ -68,31 +68,21 @@ extension TopChartsViewController: TopChartVCProtocol {
 
 extension TopChartsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.dataSource.count
+        presenter?.dataSource.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TopChartViewCell.identifaerTop, for: indexPath) as? TopChartViewCell else {fatalError()}
-        let topChartArray = presenter.dataSource[indexPath.row]
-        let model =  TopChartViewCell.ViewModel(movieName: topChartArray.docs?[indexPath.row].name ?? "name", 
-                                                movieNumber: "\(topChartArray.docs?[indexPath.row].top250 ?? 1)",
-                                                movieCategory: topChartArray.docs?[indexPath.row].countries?.first?.name ?? "name",
-                                                imageMovie: topChartArray.docs?[indexPath.row].poster?.url ?? "name")
-        cell.configure(with: model)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmCell.identifier, for: indexPath) as? FilmCell else {fatalError()}
+        let topChartArray = presenter?.dataSource[indexPath.row] ?? Film()
+        cell.configure(with: topChartArray)
         return cell
     }
 }
 
 extension TopChartsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detail = presenter.dataSource.first?.docs?[indexPath.row]
-        let model = Film(id: detail?.id ?? 0, nameMovie: detail?.name ?? "name",
-                                  movieImage: detail?.poster?.url ?? "test",
-                                  countryMovie: detail?.countries?.first?.name ?? "country",
-                                  yearOfRealiseMovie: "\(detail?.year ?? 1)",
-                                  ratingMovie: "\(detail?.rating?.imdb ?? 8.5)",
-                                  descriptionMovie: detail?.description ?? "description")
-        router.showDetailMovie(from: self, model: model)
+        let detail = presenter?.dataSource[indexPath.row] ?? Film()
+        router.showDetailMovie(from: self, model: detail)
 
     }
 }

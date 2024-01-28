@@ -9,14 +9,18 @@ import Foundation
 
 protocol TopChartPresenterProtocol: AnyObject { // описываются те действия, на которые должен реагировать презентер(должен знать как обрабатывать события при том или ином дейтсвии - вообщем бизнес-логика)
     func loadData()
-    var dataSource: [TopChartsModel] { get }
+    var dataSource: [Film] { get }
 }
 
 final class TopChartPresenter {
 
     weak var view: TopChartVCProtocol!
-    let networMoviewkService = NetworkMoviekService()
-    var dataSource: [TopChartsModel] = []
+    let networMoviewkService: NetworMoviewkServiceProtocol
+    var dataSource: [Film] = []
+    
+    init(networMoviewkService: NetworMoviewkServiceProtocol) {
+        self.networMoviewkService = networMoviewkService
+    }
 
 }
 
@@ -25,15 +29,8 @@ extension TopChartPresenter: TopChartPresenterProtocol {
         networMoviewkService.fetchData { [weak self] result in
             switch result {
             case .success(let movieResult):
-                if let docs = movieResult.docs {
-                    for _ in docs {
-                        self?.dataSource.append(movieResult)
-                    }
+                self?.dataSource.append(movieResult)
                     self?.view.reloadData()
-                } else {
-                    // Обработка ситуации, когда movieResult.docs равен nil
-                    print("movieResult.docs is nil")
-                }
             case let .failure(error):
                 switch error {
                 case .decode:

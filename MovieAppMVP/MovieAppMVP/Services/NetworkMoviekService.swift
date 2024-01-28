@@ -9,8 +9,8 @@ import Foundation
 import Alamofire
 
 protocol NetworMoviewkServiceProtocol {
-    func fetchData(complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
-    func fetchFilm(urlString: String, complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void)
+    func fetchData(complition: @escaping (Result<Film, NetworkMovieError>) -> Void)
+    func fetchFilm(urlString: String, complition: @escaping (Result<Film, NetworkMovieError>) -> Void)
 }
 
 enum NetworkMovieError: Error {
@@ -20,7 +20,7 @@ enum NetworkMovieError: Error {
 
 final class NetworkMoviekService: NetworMoviewkServiceProtocol {
     
-    func fetchData(complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void) {
+    func fetchData(complition: @escaping (Result<Film, NetworkMovieError>) -> Void) {
         
         AF.request(Constant.movieTopUrl, headers: ["X-API-KEY": Constant.apyKey])
             .validate()
@@ -36,13 +36,18 @@ final class NetworkMoviekService: NetworMoviewkServiceProtocol {
                     complition(.failure(.decode))
                     return
                 }
-                complition(.success(moviewResult))
+                guard let film = Film(filmData: moviewResult) else {
+                    return complition(.failure(.decode))
+                }
+                complition(.success(film))
+
             }
     }
 
-    func fetchFilm(urlString: String, complition: @escaping (Result<TopChartsModel, NetworkMovieError>) -> Void) {
-        
-        AF.request(urlString, headers: ["X-API-KEY": Constant.apyKey])
+    func fetchFilm(urlString: String, complition: @escaping (Result<Film, NetworkMovieError>) -> Void) {
+
+        AF.request("https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=10&query=\(urlString)"
+, headers: ["X-API-KEY": Constant.apyKey])
             .validate()
             .response { response in
                 guard let data = response.data else {
@@ -56,7 +61,10 @@ final class NetworkMoviekService: NetworMoviewkServiceProtocol {
                     complition(.failure(.decode))
                     return
                 }
-                complition(.success(moviewResult))
+                guard let film = Film(filmData: moviewResult) else {
+                    return complition(.failure(.decode))
+                }
+                complition(.success(film))
             }
     }
 }

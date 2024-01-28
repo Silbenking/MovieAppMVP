@@ -11,7 +11,8 @@ import UIKit
 struct TopChartAssemble { // непонятно как работает
 
     static func assemble() -> UIViewController {
-        let presenter = TopChartPresenter()
+        let networkService = NetworkMoviekService()
+        let presenter = TopChartPresenter(networMoviewkService: networkService)
         let viewController = TopChartsViewController(presenter: presenter)
         presenter.view = viewController
         return viewController

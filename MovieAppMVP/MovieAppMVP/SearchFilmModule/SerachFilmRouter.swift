@@ -13,8 +13,8 @@ protocol SearchFilmRouterProtocol {
 
 final class SearchFilmRouter: SearchFilmRouterProtocol {
     func showDetailMovie(from viewController: UIViewController, model: Film) {
-        let searchVC = DetailSearchFilmAssemble.assemble()
-        searchVC.detailSearchFilmView.configure(with: model)
+        let searchVC = DetailMovieAssemble.assemble()
+        searchVC.detailMovieView.configure(with: model)
         viewController.navigationController?.pushViewController(searchVC, animated: true)
     }
 }

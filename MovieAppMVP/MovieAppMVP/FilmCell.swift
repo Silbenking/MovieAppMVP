@@ -1,16 +1,18 @@
 //
-//  SavedFilmCell.swift
+//  SearchFilmCell.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 31.12.2023.
+//  Created by Сергей Сырбу on 19.01.2024.
 //
 
 import UIKit
+import SnapKit
+import Kingfisher 
 
-final class SavedFilmCell: UITableViewCell {
+final class FilmCell: UITableViewCell {
 
-    static let identifier = "SavedFilmCell"
-
+    static let identifier = "SearchFilmCell"
+    
     private lazy var movieImage: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
@@ -20,7 +22,7 @@ final class SavedFilmCell: UITableViewCell {
     private lazy var nameMovieLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.numberOfLines = 0
+        label.numberOfLines = .zero
         label.textColor = .white
         return label
     }()
@@ -31,23 +33,6 @@ final class SavedFilmCell: UITableViewCell {
         label.textAlignment = .left
         return label
     }()
-
-    // MARK: - UIConstant
-
-    private enum UIConstant {
-        static let movieImageSize: CGFloat = 150
-        static let movieImageTop: CGFloat = 10
-        static let movieImageBottom: CGFloat = 10
-        static let movieImageLeading: CGFloat = 25
-
-        static let nameMovieLabelTop: CGFloat = 40
-        static let nameMovieLabelTrailing: CGFloat = 5
-        static let nameMovieLabelLeading: CGFloat = 10
-
-        static let categoryMovieLabelBottom: CGFloat = 40
-        static let categoryMovieLabelLeading: CGFloat = 10
-
-    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -64,7 +49,6 @@ final class SavedFilmCell: UITableViewCell {
         loadImage(imageUrl: model.movieImage)
         nameMovieLabel.text = model.nameMovie
         categoryMovieLabel.text = model.countryMovie
-        
     }
 
     // MARK: - setup Layout
@@ -95,5 +79,24 @@ final class SavedFilmCell: UITableViewCell {
         guard let url = URL(string: imageUrl ) else {return}
         movieImage.kf.setImage(with: url)
         movieImage.kf.indicatorType = .activity
+    }
+}
+
+private extension FilmCell {
+    // MARK: - UIConstant
+
+    private enum UIConstant {
+        static let movieImageSize: CGFloat = 150
+        static let movieImageTop: CGFloat = 10
+        static let movieImageBottom: CGFloat = 10
+        static let movieImageLeading: CGFloat = 25
+
+        static let nameMovieLabelTop: CGFloat = 40
+        static let nameMovieLabelTrailing: CGFloat = 5
+        static let nameMovieLabelLeading: CGFloat = 10
+
+        static let categoryMovieLabelBottom: CGFloat = 40
+        static let categoryMovieLabelLeading: CGFloat = 10
+
     }
 }
