@@ -128,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				A2B0D1F82B2A1FA100E13C24 /* TopChartModel.swift */,
-				A2AD9E552B654A500068A40E /* FilmModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -184,6 +183,7 @@
 				A2DA52AF2B4177B6000F79E3 /* SavedFilmsModule */,
 				A2AD9E572B6657580068A40E /* Cell */,
 				A2B7B27C2B31E12E00409EFC /* DetailMovieModule */,
+				A2BDB40C2B698DAF00D65E8E /* Model */,
 				A2B0D1FE2B2A202F00E13C24 /* TopChartModule */,
 				A2B14FFD2B28F7E800C09AEC /* Assets.xcassets */,
 				A2B14FFF2B28F7E800C09AEC /* LaunchScreen.storyboard */,
@@ -233,6 +233,14 @@
 				A2DA52A22B40B167000F79E3 /* DetailMovieAssemble.swift */,
 			);
 			path = DetailMovieModule;
+			sourceTree = "<group>";
+		};
+		A2BDB40C2B698DAF00D65E8E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A2AD9E552B654A500068A40E /* FilmModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		A2BF612C2B59AEA300B021B8 /* SearchFilmModule */ = {

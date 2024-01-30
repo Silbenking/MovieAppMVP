@@ -9,24 +9,24 @@ import Foundation
 
 struct Film: Equatable {
     var id: Int = 0
-    var nameMovie: String = ""
-    var movieImage: String = ""
+    var nameMovie: String = "Ощхф"
+    var movieImage: String = "Test"
     var countryMovie: String = ""
     var yearOfRealiseMovie: String = ""
     var ratingMovie: String = ""
     var descriptionMovie: String = ""
-    
-    init?(filmData: TopChartsModel) {
-        id = filmData.docs?.first?.id ?? 0
-        nameMovie = filmData.docs?.first?.name ?? ""
-        movieImage = filmData.docs?.first?.poster?.url ?? ""
-        countryMovie = filmData.docs?.first?.countries?.first?.name ?? ""
-        yearOfRealiseMovie = "\(filmData.docs?.first?.year ?? 0)"
-        ratingMovie = "\(filmData.docs?.first?.rating?.imdb ?? 0)"
-        descriptionMovie = filmData.docs?.first?.description ?? ""
+
+    init(filmData: Doc) {
+        id = filmData.id
+        nameMovie = filmData.name ?? ""
+        movieImage = filmData.poster?.url ?? ""
+        countryMovie = filmData.countries?.first?.name ?? ""
+        yearOfRealiseMovie = "\(filmData.year ?? 0)"
+        ratingMovie = "\(filmData.rating?.imdb ?? 0)"
+        descriptionMovie = filmData.description ?? ""
     }
-    
-    init (filmRealm: SavedModel) {
+
+    init(filmRealm: SavedModel) {
         id = filmRealm.id
         nameMovie = filmRealm.nameMovie
         movieImage = filmRealm.imageMovie
@@ -35,6 +35,6 @@ struct Film: Equatable {
         ratingMovie = "\(filmRealm.ratingMovie)"
         descriptionMovie = filmRealm.descriptionMovie
     }
-    
+
     init() {}
 }

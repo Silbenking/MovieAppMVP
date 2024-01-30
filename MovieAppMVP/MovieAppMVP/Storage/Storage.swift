@@ -37,7 +37,7 @@ final class Storage: StorageProtocol {
     func clearAllFilms() {
         let object = realm.objects(SavedModel.self)
         do {
-            try realm.write({ // Если ставим опциональный try, то пишет что catch не нужен
+            try realm.write({ 
                 realm.delete(object)
             })
         } catch {
@@ -48,15 +48,8 @@ final class Storage: StorageProtocol {
     func checkFilm(film: Film) -> Bool {
 
         let filmId = film.id
-        let film = realm.objects(SavedModel.self).filter("id == %@", filmId).first
-        if let _ = film {
-            print("фильм уже есть")
-            return true
-        } else {
-            print("фильма нет")
-            return false
-
-        }
+        print(filmId)
+        return !realm.objects(SavedModel.self).filter("id == %@", filmId).isEmpty
     }
 
     func delete(film: Film) {
@@ -79,6 +72,8 @@ final class Storage: StorageProtocol {
             try realm.write({
                 realm.add(object)
             })
+            print(object)
+            
         } catch {
             presenter?.errorSaved()
         }
@@ -86,7 +81,7 @@ final class Storage: StorageProtocol {
 
     func read() -> [Film] {
         let object = realm.objects(SavedModel.self)
-        let films = Array(object.map {Film(filmRealm: $0)})
+        let films = Array(object.map({Film(filmRealm: $0)}))
         return films
         }
     }

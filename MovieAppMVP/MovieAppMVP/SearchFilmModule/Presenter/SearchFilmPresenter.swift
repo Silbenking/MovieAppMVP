@@ -17,14 +17,14 @@ protocol SearchFilmPresenterProtocol: AnyObject {
 final class SearchFilmPresenter {
 
     weak var view: SearchFilmTableVCProtocol!
-    let networkService: NetworMoviewkServiceProtocol
     var dataSource: [Film] = [] {
         didSet {
             view.reloadData()
         }
     }
-    var timer: Timer?
-    
+    private let networkService: NetworMoviewkServiceProtocol
+    private var timer: Timer?
+
     init(networkService: NetworMoviewkServiceProtocol) {
         self.networkService = networkService
     }
@@ -47,15 +47,14 @@ extension SearchFilmPresenter: SearchFilmPresenterProtocol {
         networkService.fetchFilm(urlString: filmName) { [weak self] result in
             switch result {
             case .success(let filmResult):
-//                
 //                if let sortedResult = filmResult.sorted(by: { firstItem, secondItem in
 //                    return firstItem.name?.compare(secondItem.name ?? "nil") == ComparisonResult.orderedAscending
 //                }) {
-                self?.dataSource.append(filmResult)
+                let filmArray = filmResult.docs?.map({ Film(filmData: $0)})
+                if let filmArray = filmArray {
+                    self?.dataSource = filmArray
+                }
                    self?.view.reloadData()
-//               } else {
-//                   print("sortedResult является nil")
-//               }
             case let .failure(error):
                 switch error {
                 case .network:

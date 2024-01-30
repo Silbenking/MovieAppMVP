@@ -12,8 +12,8 @@ protocol SavedFilmsVCProtocol: AnyObject {
 
 final class SavedFilmsVC: UIViewController {
 
-    private var presenter: SavedFilmsPresenterProtocol!
     let savedView = SavedFilmView()
+    private var presenter: SavedFilmsPresenterProtocol!
     private let router: SaveRouterProtocol = SaveRouter()
 
     init(presenter: SavedFilmsPresenterProtocol!) {

@@ -29,7 +29,14 @@ extension TopChartPresenter: TopChartPresenterProtocol {
         networMoviewkService.fetchData { [weak self] result in
             switch result {
             case .success(let movieResult):
-                self?.dataSource.append(movieResult)
+//                let film = movieResult.docs.map {Film(filmData: $0)}
+                let film2 = movieResult.docs?.compactMap({ Film(filmData: $0)
+                })
+//                        self?.dataSource.append(movieResult)                    }
+//                let filmArray = Film(film)
+                if let film2 = film2 {
+                    self?.dataSource = film2
+                }
                     self?.view.reloadData()
             case let .failure(error):
                 switch error {

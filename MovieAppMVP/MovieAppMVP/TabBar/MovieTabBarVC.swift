@@ -21,12 +21,12 @@ final class MovieTabBarVC: UITabBarController {
         topChartVC.navigationBar.barTintColor = .black
         topChartVC.navigationBar.backgroundColor = .black
         topChartVC.navigationBar.tintColor = .orange.withAlphaComponent(0.8)
-        
+
         let savedVC = UINavigationController(rootViewController: SavedFilmsAssemble.assemble())
         savedVC.navigationBar.barTintColor = .black
         savedVC.navigationBar.backgroundColor = .black
         savedVC.navigationBar.tintColor = .orange.withAlphaComponent(0.8)
-        
+
         let searchFilmVC = UINavigationController(rootViewController: SearchFilmAssemble.assemble())
         searchFilmVC.navigationBar.barTintColor = .black
         searchFilmVC.navigationBar.backgroundColor = .black
