@@ -21,28 +21,22 @@ final class SavedModel: Object {
 }
 
 protocol StorageProtocol {
-    func delete(film: Film)
-    func save(film: Film)
+    func delete(film: Film) throws
+    func save(film: Film) throws
     func read() -> [Film]
     func checkFilm(film: Film) -> Bool
-    func clearAllFilms()
+    func clearAllFilms() throws
 }
 
 final class Storage: StorageProtocol {
 
-    var presenter: DetailMoviePresenterProtocol?
-
     let realm = try! Realm()
 
-    func clearAllFilms() {
+    func clearAllFilms() throws {
         let object = realm.objects(SavedModel.self)
-        do {
             try realm.write({ 
                 realm.delete(object)
             })
-        } catch {
-            presenter?.errorDelete()
-        }
     }
 
     func checkFilm(film: Film) -> Bool {
@@ -52,31 +46,21 @@ final class Storage: StorageProtocol {
         return !realm.objects(SavedModel.self).filter("id == %@", filmId).isEmpty
     }
 
-    func delete(film: Film) {
+    func delete(film: Film) throws {
         let filmId = film.id
         let film = realm.objects(SavedModel.self).filter("id == %@", filmId).first
         if let film = film {
-            do {
                 try realm.write({
                     realm.delete(film)
                 })
-            } catch {
-                presenter?.errorDelete()
-            }
         }
     }
-
-    func save(film: Film) {
+    
+    func save(film: Film) throws {
         let object = SavedModel(value: [film.id, film.nameMovie, film.countryMovie, film.movieImage, film.yearOfRealiseMovie, film.ratingMovie, film.descriptionMovie])
-        do {
             try realm.write({
                 realm.add(object)
             })
-            print(object)
-            
-        } catch {
-            presenter?.errorSaved()
-        }
     }
 
     func read() -> [Film] {

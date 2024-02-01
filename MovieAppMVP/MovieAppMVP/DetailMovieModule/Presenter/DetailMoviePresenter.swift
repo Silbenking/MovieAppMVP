@@ -15,8 +15,6 @@ protocol DetailMoviePresenterProtocol: AnyObject {
     var movieDetailPresenterModel: Film {get set}
     func checkFilm()
     func checkButton()
-    func errorSaved()
-    func errorDelete()
 }
 
 final class DetailMoviePresenter {
@@ -32,13 +30,6 @@ final class DetailMoviePresenter {
 }
 
 extension DetailMoviePresenter: DetailMoviePresenterProtocol {
-    func errorDelete() {
-        view.errorDelete()
-    }
-
-    func errorSaved() {
-        view.errorSaved()
-    }
 
     func checkButton() {
         let isFavorite = storageService.checkFilm(film: movieDetailPresenterModel)
@@ -56,19 +47,27 @@ extension DetailMoviePresenter: DetailMoviePresenterProtocol {
             view.savedFilm()
         } else {
             saveData(film: movieDetailPresenterModel)
+            print("Save - \(movieDetailPresenterModel)")
             view.saveFilm()
         }
     }
 
     func deleteFilm(film: Film) {
-        storageService.delete(film: film)
+        do {
+            try storageService.delete(film: film)
+        } catch {
+            view.errorDelete()
+        }
     }
     func saveData(film: Film) {
-        storageService.save(film: film) // тут надо добавить в константу?
+        do {
+           try storageService.save(film: film)
+        } catch {
+            view.errorSaved()
+        }
     }
 
     func handleSaveMovieButton() {
        checkFilm()
     }
-
 }

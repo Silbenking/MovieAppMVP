@@ -8,6 +8,7 @@ import UIKit
 
 protocol SavedFilmsVCProtocol: AnyObject {
     func reloadTableView()
+    func errorDelete()
 }
 
 final class SavedFilmsVC: UIViewController {
@@ -59,6 +60,9 @@ final class SavedFilmsVC: UIViewController {
 extension SavedFilmsVC: SavedFilmsVCProtocol {
     func reloadTableView() {
         savedView.tableView.reloadData()
+    }
+    func errorDelete() {
+        errorAlert(nameError: "Ошибка удаления")
     }
 }
 // MARK: - setup TableViewDataSource

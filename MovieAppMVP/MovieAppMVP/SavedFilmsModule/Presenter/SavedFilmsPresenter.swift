@@ -27,7 +27,11 @@ final class SavedFilmsPresenter {
 
 extension SavedFilmsPresenter: SavedFilmsPresenterProtocol {
     func clearHandle() {
-        storageService.clearAllFilms()
+        do {
+           try storageService.clearAllFilms()
+        } catch {
+            view.errorDelete()
+        }
         arrayFilms = []
         self.view.reloadTableView()
     }
@@ -38,6 +42,10 @@ extension SavedFilmsPresenter: SavedFilmsPresenterProtocol {
     }
 
     func deleteFilm(film: Film) {
-        storageService.delete(film: film)
+        do {
+           try storageService.delete(film: film)
+        } catch {
+            view.errorDelete()
+        }
     }
 }

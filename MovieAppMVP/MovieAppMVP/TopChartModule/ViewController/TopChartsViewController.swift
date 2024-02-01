@@ -17,7 +17,7 @@ protocol TopChartVCProtocol: AnyObject {
 final class TopChartsViewController: UIViewController {
 
     private let router: DetailRouterProtocol = DetailRouter()
-    private var presenter: TopChartPresenterProtocol?
+    private var presenter: TopChartPresenterProtocol!
     var topChartArray = [TopChartsModel]()
     let topView = TopChartView()
 
@@ -73,7 +73,7 @@ extension TopChartsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FilmCell.identifier, for: indexPath) as? FilmCell else {fatalError()}
-        let topChartArray = presenter?.dataSource[indexPath.row] ?? Film()
+        let topChartArray = presenter.dataSource[indexPath.row]
         cell.configure(with: topChartArray)
         return cell
     }
@@ -81,7 +81,7 @@ extension TopChartsViewController: UITableViewDataSource {
 
 extension TopChartsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detail = presenter?.dataSource[indexPath.row] ?? Film()
+        let detail = presenter.dataSource[indexPath.row]
         router.showDetailMovie(from: self, model: detail)
 
     }
