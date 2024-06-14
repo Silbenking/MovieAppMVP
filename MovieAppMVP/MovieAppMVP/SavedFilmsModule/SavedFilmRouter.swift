@@ -2,7 +2,6 @@
 //  SavedFilmRouter.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 14.01.2024.
 //
 
 import UIKit

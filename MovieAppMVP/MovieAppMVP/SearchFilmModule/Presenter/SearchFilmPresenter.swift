@@ -2,7 +2,6 @@
 //  SearchFilmPresenter.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 18.01.2024.
 //
 
 import Foundation
@@ -47,9 +46,6 @@ extension SearchFilmPresenter: SearchFilmPresenterProtocol {
         networkService.fetchFilm(urlString: filmName) { [weak self] result in
             switch result {
             case .success(let filmResult):
-//                if let sortedResult = filmResult.sorted(by: { firstItem, secondItem in
-//                    return firstItem.name?.compare(secondItem.name ?? "nil") == ComparisonResult.orderedAscending
-//                }) {
                 let filmArray = filmResult.docs?.map({ Film(filmData: $0)})
                 if let filmArray = filmArray {
                     self?.dataSource = filmArray

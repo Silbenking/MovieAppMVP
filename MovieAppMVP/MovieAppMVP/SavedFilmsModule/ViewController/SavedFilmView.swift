@@ -2,7 +2,6 @@
 //  SavedFilmView.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 31.12.2023.
 //
 
 import UIKit

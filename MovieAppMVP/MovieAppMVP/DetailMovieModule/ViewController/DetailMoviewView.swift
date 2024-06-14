@@ -2,7 +2,6 @@
 //  DetailMovieView.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 29.12.2023.
 //
 
 import UIKit

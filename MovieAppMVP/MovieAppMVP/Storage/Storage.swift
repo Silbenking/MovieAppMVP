@@ -2,7 +2,6 @@
 //  Storage.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 12.01.2024.
 //
 
 import Foundation

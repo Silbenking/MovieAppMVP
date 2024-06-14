@@ -2,7 +2,6 @@
 //  DetailMovieViewController.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 19.12.2023.
 //
 
 import UIKit
@@ -20,7 +19,7 @@ final class DetailMovieViewController: UIViewController, UIGestureRecognizerDele
     var presenter: DetailMoviePresenterProtocol?
     let detailMovieView = DetailMovieView()
 
-    init(presenter: DetailMoviePresenterProtocol) { // не понятно как инициализировать
+    init(presenter: DetailMoviePresenterProtocol) { 
         super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
     }

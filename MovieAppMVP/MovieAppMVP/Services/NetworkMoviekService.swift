@@ -2,7 +2,6 @@
 //  Services.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 16.12.2023.
 //
 
 import Foundation
@@ -58,9 +57,6 @@ final class NetworkMoviekService: NetworMoviewkServiceProtocol {
                     complition(.failure(.decode))
                     return
                 }
-//                guard let film = Film(filmData: moviewResult) else {
-//                    return complition(.failure(.decode))
-//                }
                 complition(.success(moviewResult))
             }
     }

@@ -2,7 +2,6 @@
 //  AppDelegate.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 12.12.2023.
 //
 
 import UIKit
@@ -17,11 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
+       
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }

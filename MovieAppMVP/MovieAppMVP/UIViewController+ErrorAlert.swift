@@ -2,7 +2,6 @@
 //  TopChartErrorAlert.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 30.12.2023.
 //
 
 import UIKit

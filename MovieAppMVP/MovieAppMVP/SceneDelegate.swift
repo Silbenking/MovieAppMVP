@@ -2,7 +2,6 @@
 //  SceneDelegate.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 12.12.2023.
 //
 
 import UIKit

@@ -2,7 +2,6 @@
 //  FilmModel.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 27.01.2024.
 //
 
 import Foundation

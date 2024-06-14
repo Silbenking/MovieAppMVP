@@ -2,7 +2,6 @@
 //  SearchFilmTableVC.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 18.01.2024.
 //
 
 import UIKit

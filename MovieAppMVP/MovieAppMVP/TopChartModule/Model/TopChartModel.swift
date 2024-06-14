@@ -2,7 +2,6 @@
 //  TopChartModel.swift
 //  MovieAppMVP
 //
-//  Created by Сергей Сырбу on 13.12.2023.
 //
 
 import Foundation
